@@ -1,0 +1,141 @@
+{
+  "analysisDate": "2026-10-15",
+  "timezone": "Asia/Taipei",
+  "scope": "Selected source fingerprints only; content not bundled",
+  "revisions": {
+    "G1": "9a967bfc1b56fdccac6376fd08b7a6083582c876",
+    "G2": "a4504de8add16941dae43fee2a2edc5ed260bafc"
+  },
+  "files": [
+    {
+      "source": "G1",
+      "path": "README.md",
+      "sha256": "7bc2d34a7f634e04aeb56dc68e76199cf5645e4952219fcd990ed9e1afbd3d6b"
+    },
+    {
+      "source": "G1",
+      "path": "業務邏輯定義文件.md",
+      "sha256": "d33642c756ebeb9b3f092341ae497abb4b8c1e8a770201595b907d1796e7ab98"
+    },
+    {
+      "source": "G1",
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/controller/api/TomOrderController.java",
+      "sha256": "0d43440909644d8bde6502c0729fb18d7eed2aa498d2e14780817cd46c54a2a8"
+    },
+    {
+      "source": "G1",
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/domain/model/TomOrder.java",
+      "sha256": "b32b9f62e8ee5c0c312a9bbe6fbbd1f08d942f3bfa5625dd314040231c071eda"
+    },
+    {
+      "source": "G1",
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/domain/model/TomOrderType.java",
+      "sha256": "74a98b6e3bea40c72fb586fbbc8b266e0bdaa7ac9668b7f6b6d98a09146f3c1d"
+    },
+    {
+      "source": "G1",
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/service/DispatchService.java",
+      "sha256": "498b88ff9ddbd2f260f184259c11f3434a99072b75519e3721a861aa8bb552a5"
+    },
+    {
+      "source": "G2",
+      "path": "docs/architecture.md",
+      "sha256": "49f42b3439a1a5ad8d93057523717ee2bef1aff75c9f7dabe8b54ee09a866582"
+    },
+    {
+      "source": "G2",
+      "path": "backend/README.md",
+      "sha256": "67c36d1e50693e2917cb4554e535aedc863367211706d3daec687ffdc033dff4"
+    },
+    {
+      "source": "G2",
+      "path": "frontend/package.json",
+      "sha256": "ecb6ef4f168989489414af16421e097c98f3d3f4d24394836938fbfa34a8b93f"
+    },
+    {
+      "source": "G2",
+      "path": "compose.yaml",
+      "sha256": "569728d58b3188ec6aafa0736b77d22ad44cf576bafe131f50e72b8a859eb019"
+    },
+    {
+      "source": "L1",
+      "path": "src/main/java/com/xk/truck/information/model/po/T_Customer.java",
+      "sha256": "d21e9c9b58e6a731f8a7d211dc366b02acc46323c2bb74f3bb8f822eaeb954fa"
+    },
+    {
+      "source": "L1",
+      "path": "src/main/java/com/xk/truck/modules/model/po/T_Task.java",
+      "sha256": "d5b3e45a5a8a5e9592e7220666c371dbcf61d0996ecf9b4aee214aa06bc21d82"
+    },
+    {
+      "source": "L1",
+      "path": "src/main/java/com/xk/truck/modules/web/TruckTaskController.java",
+      "sha256": "f8a3c2ebcee6555c5a71201b779fae4f969399594a409ce6bed35a99bcc39b18"
+    },
+    {
+      "source": "L2",
+      "path": "pom.xml",
+      "sha256": "1dd9e47a4659105059ab46b8ad16c2aa878ec1b1e267f319b6139e3d2f5f23e1"
+    },
+    {
+      "source": "L3",
+      "path": "pom.xml",
+      "sha256": "189aef938f490e02f29223f67cb64a310265f4e53d2188d064b6e1794c516ae8"
+    },
+    {
+      "source": "L3",
+      "path": "src/main/java/com/xk/TestController.java",
+      "sha256": "ffa4b7af0460d199cd427764c5e5425ba1ff98b36842f08982b3153edb6d7b72"
+    },
+    {
+      "source": "L4",
+      "path": "pom.xml",
+      "sha256": "6883dbcbe6cb3647aaf246d0b60e9b4c35f76d3de534c500f0ccad8e0f421f0b"
+    },
+    {
+      "source": "L5",
+      "path": "xk-truck/pom.xml",
+      "sha256": "3404641b82ed03d6dab08eec4cf72ca6fe4797b7e4f7db7e1c73715c849219fc"
+    },
+    {
+      "source": "L8",
+      "path": "package.json",
+      "sha256": "5bea489c7aa118eff7302b6528f4befe212cb87aa93f1308eda80ec5b75898a8"
+    },
+    {
+      "source": "L8",
+      "path": "src/app/pages/tom/order/Model.tsx",
+      "sha256": "f80c056ce8c34d369ae88463b60464e1372fd4bf1a534647ea8ffb057e9fe387"
+    },
+    {
+      "source": "L8",
+      "path": "src/app/pages/tom/order/Query.tsx",
+      "sha256": "c88e8d8df92f0c54e0fe3dbf8158297e9e060a6dde8ecdd3dbfc3024ecd02a1c"
+    },
+    {
+      "source": "L8",
+      "path": "src/app/pages/tom/container/Model.tsx",
+      "sha256": "b1e404a38b25f85daee6af95144bacd530ecc83c53c5676ff8af681a4c5184f7"
+    },
+    {
+      "source": "L8",
+      "path": "src/app/pages/tom/tasks/Model.tsx",
+      "sha256": "3d43503b0ee268631c4b2a45a91ddee1f3f1e7d2b6ca20410b0fc6ca7577077f"
+    },
+    {
+      "source": "L8",
+      "path": "src/app/pages/crm/Model.tsx",
+      "sha256": "5f57461e8581536e3f13eff089246a5e5ddb80f27d24554a5459e9827bd56cc2"
+    },
+    {
+      "source": "L8",
+      "path": "src/app/pages/port/Model.ts",
+      "sha256": "2ae770e5a5156f29678d8ffbb7bdc170ab7fd8f1e3689b90baf92d672df4e76f"
+    },
+    {
+      "source": "L9",
+      "path": "專案建議報告書.md",
+      "sha256": "26e56ea8357b5c282336a8b92be6f37340342186143e5f12ebcf8bba80b4ce6b"
+    }
+  ]
+}
