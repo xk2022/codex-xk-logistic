@@ -61,4 +61,3 @@
 - 開始任何實作前，先閱讀 docs/README.md 與 docs/01-source-inventory.md 至 docs/07-cloud-handoff.md，辨識已核准需求、待決策與交付界線。
 - 現有文件命名與路徑屬既有交接契約，除非另外核准，不因中央 UPPER_SNAKE_CASE 規範而批次改名。
 - 不得憑空補齊物流業務規則、資料庫結構、客戶資料或外部串接設定；不確定的高風險事項先詢問。
-- 本次僅同步 AGENTS.md，不修改需求、架構或產品原始檔案。
