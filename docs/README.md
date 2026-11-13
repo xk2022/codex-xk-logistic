@@ -25,3 +25,12 @@
 已確認：參考 xk-truck-platform 的業務，依 codex-xk-rotaract 方式前後端分離；先確認規格再實作；搜尋本機相關專案；文件存於本 repo 的 docs 並推送 GitHub。
 
 未執行：啟動舊系統、連接舊資料庫、驗證舊測試、移轉正式資料、複製商業模板與舊專案原始碼。文件只整理結構與業務，不收錄密碼、Token、連線設定或客戶實際資料。
+
+## L1–L4 接手更新
+
+本輪已依管理中心規則展開規格決策工作，請先閱讀 [執行與決策入口](LOGISTICS_EXECUTION.md)。四份細化提案補充既有 01–07 文件，不將舊 D01–D10 未決事項自動視為核准；新版程式仍排在規格與來源決策後。
+
+- [L1 業務模型](L1_BUSINESS_MODEL.md)
+- [L2 第一版與驗收](L2_MVP_AND_ACCEPTANCE.md)
+- [L3 新舊接續與技術](L3_LEGACY_AND_TECHNOLOGY.md)
+- [L4 維運與費用](L4_OPERATIONS_AND_COST.md)
