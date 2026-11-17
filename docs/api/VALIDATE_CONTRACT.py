@@ -161,6 +161,34 @@ def main():
             if '{orderId}' in path:
                 require('#/components/parameters/OrderId' in params, 'Path UUID required')
     require(len(operations) == len(set(operations)) == 5, 'Expected five unique operations')
+    policy_document = json.loads((api / 'ORDER_DRAFT_ACCESS_POLICY.json').read_text())
+    require(policy_document['contractVersion'] == spec['info']['version'] == '0.2.0',
+            'Authorization document version must match OpenAPI')
+    require(policy_document['status'] == 'accepted_not_implemented', 'Policy is a contract, not runtime evidence')
+    require(policy_document['runtime_validation'] == 'not_run', 'Authorization HTTP checks were not run')
+    require(policy_document['decisionIds'] == ['ACC-P01', 'ACC-P02'], 'Only adopted access decisions')
+    require(policy_document['multiRoleResolution'] == 'pending_START-P03', 'Multiple-role policy remains pending')
+    bindings = policy_document['bindings']
+    require(len(bindings) == 15, 'Expected five operations by three single roles')
+    actual_bindings = {(b['operationId'], b['singleLogicalRole']): b for b in bindings}
+    require(len(actual_bindings) == 15, 'Duplicate authorization binding')
+    for path, path_item in spec['paths'].items():
+        for method, operation in path_item.items():
+            if method not in {'get', 'put', 'post'}:
+                continue
+            policy = operation['x-authorization-policy']
+            require(policy['status'] == 'accepted_not_implemented', 'Adopted scope required')
+            require(policy['companyScope'] == policy_document['scope'] == 'server_current_company',
+                    'Client cannot choose company scope')
+            require(policy['allowedSingleRoles'] == ['ADMIN', 'DISPATCHER'], 'Adopted manager/dispatcher scope')
+            require(policy['deniedSingleRoles'] == ['DRIVER'], 'Driver cannot use aggregate API')
+            require(policy['authorizationBeforeIdempotencyReplay'] is True, 'Replay must reauthorize')
+            for role in ['ADMIN', 'DISPATCHER', 'DRIVER']:
+                binding = actual_bindings[(operation['operationId'], role)]
+                require(binding['path'] == path and binding['method'] == method.upper(), 'Binding route mismatch')
+                require(binding['access'] == ('DENY_403' if role == 'DRIVER' else 'ALLOW_WITH_SCOPE_AND_GUARDS'),
+                        'Binding contradicts adopted role scope')
+            require('403' in operation['responses'], 'No-role response must be documented')
     with (root / 'docs/FIRST_SLICE_ORDER_FIELDS.csv').open() as file:
         rows = list(csv.DictReader(file))
     require(len(rows) == len({r['id'] for r in rows}) == 40, 'Expected 40 unique business definitions')
@@ -181,6 +209,7 @@ def main():
     print(json.dumps({
         'oasDocumentShape': 'pass (official OAI 2022-10-07 schema; components validated separately)',
         'componentSchemas': len(schemas), 'internalRefs': reference_count, 'operations': len(operations),
+        'authorizationDocumentBindings': len(bindings),
         'schemaPositive': len(fixtures['schemaPositive']), 'schemaNegative': len(fixtures['schemaNegative']),
         'graphCases': len(fixtures['graphCases']), 'businessFieldDefinitions': len(rows),
         'markdownFiles': markdown_count, 'localLinks': link_count,

@@ -7,7 +7,8 @@
 ## 最新入口
 
 - [全新啟用決策ADR-0007](adr/ADR-0007.md)：使用者明確回答沒有必須保留的舊Truck客戶／訂單／照片；本次不做舊資料匯入。
-- [首片權限與測試環境提案](FIRST_SLICE_ACCESS_AND_TEST_PLAN.md)：ACC-P01／P02與DEV-P01為待確認方案，未變更授權或建立環境。
+- [首片已採用權限](FIRST_SLICE_ACCESS_AND_TEST_PLAN.md)、[ADR-0008](adr/ADR-0008.md)：ACC-P01／P02已採用，OpenAPI 0.2.0已記角色／資料範圍，尚無實作。
+- [隔離測試啟動包](FIRST_SLICE_STARTUP_PLAN.md)：DEV-P01與首次帳號、復原、Session、密碼政策START-P01～P04為Proposed，未建環境／帳號。
 
 - [首片訂單欄位與驗收規格](FIRST_SLICE_ORDER_SPEC.md)：P01～P03已採用；40筆定義區分採用範圍及待決例外，產品驗收尚未執行。
 - [首片資料模型](FIRST_SLICE_DATA_MODEL.md)、[OpenAPI契約與說明](api/README.md)：草稿建立／替換／清單／明細／只讀完整性，含穩定ref、聚合版本、重送及合成正反例；尚無產品程式或已部署服務。

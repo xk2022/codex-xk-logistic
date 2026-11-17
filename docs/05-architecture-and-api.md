@@ -31,7 +31,7 @@ compose.yaml              確認後建立本機服務
 | 後端 | 已採用 Java 21／Spring Boot 4.1.x；Spring Security 實作 Session／CSRF | 核對並鎖定修補版及相容 BOM／工具 |
 | DB | 已採用 PostgreSQL 17 | 修補版與相依待驗證；D07本次依[ADR-0007](adr/ADR-0007.md)採M01，無所詢問舊資料匯入需求 |
 | 資料存取 | 已採用 Spring Data JPA；查詢視需要用投影／明確查詢 | Entity／交易／鎖與效能依核定業務規格設計、驗收 |
-| 認證 | 已採用同源瀏覽器 Session＋CSRF | 詳細逾時、復原、各動作資料授權待 D02／D10；外部 App 是後續候選 |
+| 認證 | 已採用同源瀏覽器 Session＋CSRF | ACC-P01／P02五項草稿角色／範圍已採用；逾時、復原及其餘動作待D02／D10；外部 App 是後續候選 |
 | 結構版本 | 已採用 Flyway，JPA 驗證映射 | PostgreSQL module／版本與空庫／升級驗收待完成 |
 | 檔案 | 候選：S3 相容儲存介面；開發本機 adapter | 供應商、容量、保存期限與存取政策 |
 | 部署 | 前後端獨立建置，反向代理同源 /api | 雲端平台、staging／production 與網域 |
@@ -40,7 +40,7 @@ compose.yaml              確認後建立本機服務
 
 ## 首片工程契約與其他API候選
 
-ORD-P01～P03已採用，[首片OpenAPI](api/openapi.yaml)、[操作與重送說明](api/README.md)及[資料模型](FIRST_SLICE_DATA_MODEL.md)為本片契約；其餘端點仍為候選。D02逐操作授權等未決前不得據schema暴露服務。以下共通表示對齊AGENTS，本片之外的範圍與政策沒有因此採用。
+ORD-P01～P03已採用，[首片OpenAPI](api/openapi.yaml)、[操作與重送說明](api/README.md)及[資料模型](FIRST_SLICE_DATA_MODEL.md)為本片契約；其餘端點仍為候選。ACC-P01／P02已採用並寫入OpenAPI；其餘帳號／Session等配套未決且產品未實作，不能據文件存在就暴露服務。以下共通表示對齊AGENTS，本片之外的範圍與政策沒有因此採用。
 
 - `/api/v1`，JSON；UUID 字串，列舉代碼大寫。
 - 分頁 page=0 起，size 預設 20、上限 100；排序欄白名單；過濾與授權在資料庫查詢層完成。

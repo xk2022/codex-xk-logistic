@@ -1,8 +1,8 @@
-# 首片訂單 API 契約 v0.1
+# 首片訂單 API 契約 v0.2
 
 日期：2026-11-17（Asia/Taipei）。[Issue #4](https://github.com/xk2022/codex-xk-logistic/issues/4)。
 
-[openapi.yaml](openapi.yaml) 是 OpenAPI 3.1.0 工程契約，依已採用的 [ORD-P01～P03](../FIRST_SLICE_ORDER_SPEC.md) 與 [資料模型](../FIRST_SLICE_DATA_MODEL.md) 建立。尚無 API 程式、可連線服務、DB 或執行驗收；文件版本 0.1.0 不是產品發版。詳細授權等未決政策不因 schema 存在變成已核准。
+[openapi.yaml](openapi.yaml) 是 OpenAPI 3.1.0 工程契約，依已採用的 [ORD-P01～P03](../FIRST_SLICE_ORDER_SPEC.md) 與 [資料模型](../FIRST_SLICE_DATA_MODEL.md) 建立。尚無 API 程式、可連線服務、DB 或執行驗收；文件版本0.2.0不是產品發版。ACC-P01／P02已由使用者採用，見[ADR-0008](../adr/ADR-0008.md)與[15個單角色對照](ORDER_DRAFT_ACCESS_POLICY.json)；其他登入配套／非首片動作仍待確認。
 
 ## 操作範圍
 
@@ -46,7 +46,7 @@ pendingPolicyIds 保留相關未決政策，例如 D04_CONTACT、D04_CONTAINER_F
 
 ## 認證與重送
 
-沿已採用 Session＋CSRF，cookie 以 JSESSIONID 表示；POST／PUT 必有 X-CSRF-TOKEN 及 Idempotency-Key。這是契約表示，不是已設定 Cookie／登入／復原政策。登入與更新 token 端點不在本片；D02 逐動作與資料範圍核定前不得以「已登入」取代授權後暴露這些操作。列表、明細、計數與重播結果均要查同一授權範圍。
+沿已採用 Session＋CSRF，cookie 以 JSESSIONID 表示；POST／PUT 必有 X-CSRF-TOKEN 及 Idempotency-Key。這是契約表示，不是已設定 Cookie／登入／復原政策。登入與更新 token 端點不在本片；ACC-P01／P02已核定：五項操作只開放管理員／調度員的本公司資料，司機整單拒絕；登入本身不授予業務權限。ADMIN／DISPATCHER／DRIVER是邏輯標籤，並非已存在的DB角色；多角色兼任解析及登入／復原等仍待[啟動包](../FIRST_SLICE_STARTUP_PLAN.md)確認。列表、明細、計數與重播結果均要查同一授權範圍。
 
 寫入處理次序：
 
@@ -75,6 +75,6 @@ pendingPolicyIds 保留相關未決政策，例如 D04_CONTACT、D04_CONTAINER_F
 
 [契約合成資料](ORDER_DRAFT_CONTRACT_EXAMPLES.json) 明確區分 schema 正反例、圖結構正反例與未執行服務情境；不是 DB seed 或實際 HTTP 結果。[檢查紀錄](CONTRACT_CHECKS.md) 記範圍及限制。舊 [概念案例](../FIRST_SLICE_ORDER_EXAMPLES.json) 保留作欄位追溯，不當成本契約的請求／完整回應。
 
-D07本次已採[M01全新啟用](../adr/ADR-0007.md)。後續需完成D02／D04字典與例外、D10開發與測試環境／保存政策及既有開工門檻，才進行程式、Migration、DB／HTTP／交易與授權驗收；手機／照片／部署仍按各自切片。未建立日曆事件或指定上線日。
+D07本次已採[M01全新啟用](../adr/ADR-0007.md)。ACC-P01／P02不再待確認；後續需完成D02其餘帳號／Session配套、D04字典與例外、D10測試環境／保存政策及既有開工門檻，才進行程式、Migration、DB／HTTP／交易與授權驗收；手機／照片／部署仍按各自切片。未建立日曆事件或指定上線日。
 
 技術依據：[OpenAPI 3.1.0](https://spec.openapis.org/oas/v3.1.0)、[Cookie Authentication](https://swagger.io/docs/specification/v3_0/authentication/cookie-authentication/)、[Spring Security CSRF](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html)。
