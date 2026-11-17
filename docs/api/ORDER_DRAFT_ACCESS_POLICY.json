@@ -1,0 +1,124 @@
+{
+  "contractVersion": "0.2.0",
+  "decisionIds": [
+    "ACC-P01",
+    "ACC-P02"
+  ],
+  "status": "accepted_not_implemented",
+  "source": "../adr/ADR-0008.md",
+  "logicalRoles": [
+    "ADMIN",
+    "DISPATCHER",
+    "DRIVER"
+  ],
+  "scope": "server_current_company",
+  "multiRoleResolution": "pending_START-P03",
+  "runtime_validation": "not_run",
+  "bindings": [
+    {
+      "operationId": "createOrderDraft",
+      "method": "POST",
+      "path": "/orders",
+      "singleLogicalRole": "ADMIN",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "createOrderDraft",
+      "method": "POST",
+      "path": "/orders",
+      "singleLogicalRole": "DISPATCHER",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "createOrderDraft",
+      "method": "POST",
+      "path": "/orders",
+      "singleLogicalRole": "DRIVER",
+      "access": "DENY_403"
+    },
+    {
+      "operationId": "listOrderDrafts",
+      "method": "GET",
+      "path": "/orders",
+      "singleLogicalRole": "ADMIN",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "listOrderDrafts",
+      "method": "GET",
+      "path": "/orders",
+      "singleLogicalRole": "DISPATCHER",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "listOrderDrafts",
+      "method": "GET",
+      "path": "/orders",
+      "singleLogicalRole": "DRIVER",
+      "access": "DENY_403"
+    },
+    {
+      "operationId": "getOrderDraft",
+      "method": "GET",
+      "path": "/orders/{orderId}",
+      "singleLogicalRole": "ADMIN",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "getOrderDraft",
+      "method": "GET",
+      "path": "/orders/{orderId}",
+      "singleLogicalRole": "DISPATCHER",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "getOrderDraft",
+      "method": "GET",
+      "path": "/orders/{orderId}",
+      "singleLogicalRole": "DRIVER",
+      "access": "DENY_403"
+    },
+    {
+      "operationId": "replaceOrderDraft",
+      "method": "PUT",
+      "path": "/orders/{orderId}",
+      "singleLogicalRole": "ADMIN",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "replaceOrderDraft",
+      "method": "PUT",
+      "path": "/orders/{orderId}",
+      "singleLogicalRole": "DISPATCHER",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "replaceOrderDraft",
+      "method": "PUT",
+      "path": "/orders/{orderId}",
+      "singleLogicalRole": "DRIVER",
+      "access": "DENY_403"
+    },
+    {
+      "operationId": "checkOrderAcceptanceFields",
+      "method": "GET",
+      "path": "/orders/{orderId}/acceptance-check",
+      "singleLogicalRole": "ADMIN",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "checkOrderAcceptanceFields",
+      "method": "GET",
+      "path": "/orders/{orderId}/acceptance-check",
+      "singleLogicalRole": "DISPATCHER",
+      "access": "ALLOW_WITH_SCOPE_AND_GUARDS"
+    },
+    {
+      "operationId": "checkOrderAcceptanceFields",
+      "method": "GET",
+      "path": "/orders/{orderId}/acceptance-check",
+      "singleLogicalRole": "DRIVER",
+      "access": "DENY_403"
+    }
+  ]
+}

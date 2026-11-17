@@ -2,8 +2,9 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: XK Logistics First Slice Order Draft API
-  version: 0.1.0
-  description: 首片工程契約；ORD-P01～P03已由使用者採用。文件與schema驗證不代表API已實作、已部署或產品驗收通過。詳細授權／帳號政策、T06部署等仍待確認。 D07本次依ADR-0007採M01，不匯入舊客戶／訂單／照片；空庫及相依仍待驗證。
+  version: 0.2.0
+  description: 首片工程契約；ORD-P01～P03已由使用者採用。文件與schema驗證不代表API已實作、已部署或產品驗收通過。其餘帳號／Session政策、T06部署等仍待確認。 D07本次依ADR-0007採M01，不匯入舊客戶／訂單／照片；空庫及相依仍待驗證。
+    ACC-P01／P02已採用：管理員／調度員操作本公司草稿，司機不開放整單API；其他登入配套未核准。
 servers:
 - url: /api/v1
   description: 同源相對路徑；非已部署服務
@@ -50,8 +51,20 @@ paths:
         '500':
           $ref: '#/components/responses/Unexpected'
       x-implementation-status: not_implemented
-      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
-        alone is insufficient.
+      x-authorization-policy:
+        decisionIds: &id001
+        - ACC-P01
+        - ACC-P02
+        status: accepted_not_implemented
+        companyScope: server_current_company
+        allowedSingleRoles: &id002
+        - ADMIN
+        - DISPATCHER
+        deniedSingleRoles: &id003
+        - DRIVER
+        multiRoleResolution: pending_START-P03
+        accountSessionRecoveryPolicy: pending_START-P01_to_P04
+        authorizationBeforeIdempotencyReplay: true
       requestBody:
         required: true
         content:
@@ -112,8 +125,15 @@ paths:
         '500':
           $ref: '#/components/responses/Unexpected'
       x-implementation-status: not_implemented
-      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
-        alone is insufficient.
+      x-authorization-policy:
+        decisionIds: *id001
+        status: accepted_not_implemented
+        companyScope: server_current_company
+        allowedSingleRoles: *id002
+        deniedSingleRoles: *id003
+        multiRoleResolution: pending_START-P03
+        accountSessionRecoveryPolicy: pending_START-P01_to_P04
+        authorizationBeforeIdempotencyReplay: true
   /orders/{orderId}:
     get:
       operationId: getOrderDraft
@@ -141,8 +161,15 @@ paths:
         '500':
           $ref: '#/components/responses/Unexpected'
       x-implementation-status: not_implemented
-      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
-        alone is insufficient.
+      x-authorization-policy:
+        decisionIds: *id001
+        status: accepted_not_implemented
+        companyScope: server_current_company
+        allowedSingleRoles: *id002
+        deniedSingleRoles: *id003
+        multiRoleResolution: pending_START-P03
+        accountSessionRecoveryPolicy: pending_START-P01_to_P04
+        authorizationBeforeIdempotencyReplay: true
     put:
       operationId: replaceOrderDraft
       tags:
@@ -179,8 +206,15 @@ paths:
         '500':
           $ref: '#/components/responses/Unexpected'
       x-implementation-status: not_implemented
-      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
-        alone is insufficient.
+      x-authorization-policy:
+        decisionIds: *id001
+        status: accepted_not_implemented
+        companyScope: server_current_company
+        allowedSingleRoles: *id002
+        deniedSingleRoles: *id003
+        multiRoleResolution: pending_START-P03
+        accountSessionRecoveryPolicy: pending_START-P01_to_P04
+        authorizationBeforeIdempotencyReplay: true
       requestBody:
         required: true
         content:
@@ -214,8 +248,15 @@ paths:
         '500':
           $ref: '#/components/responses/Unexpected'
       x-implementation-status: not_implemented
-      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
-        alone is insufficient.
+      x-authorization-policy:
+        decisionIds: *id001
+        status: accepted_not_implemented
+        companyScope: server_current_company
+        allowedSingleRoles: *id002
+        deniedSingleRoles: *id003
+        multiRoleResolution: pending_START-P03
+        accountSessionRecoveryPolicy: pending_START-P01_to_P04
+        authorizationBeforeIdempotencyReplay: true
 components:
   securitySchemes:
     sessionAuth:
@@ -1035,8 +1076,10 @@ x-business-decisions-accepted:
 - ORD-P01
 - ORD-P02
 - ORD-P03
+- ACC-P01
+- ACC-P02
 x-policies-pending:
-- D02 detailed authorization
+- D02 account/session/recovery/multi-role and non-slice operations
 - D04 exceptions
 - D06 photos
 - D09 release exceptions
