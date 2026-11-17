@@ -1,0 +1,295 @@
+{
+  "status": "PROPOSED",
+  "synthetic": true,
+  "representation": "post-save read-model illustration; not an API request, DB seed or execution result",
+  "runtime_validation": "not_run",
+  "note": "示意 UUID、單號、字典值與時間不是正式編碼／API 契約；尚無真實業務案例或日曆排程。櫃號、聯絡方式及場站截止資料未知，案例只供草稿／重讀評審，不證明可受理、派工或出發。",
+  "referenceCustomers": [
+    {
+      "id": "00000000-0000-4000-8000-000000000101",
+      "name": "示意客戶甲",
+      "enabled": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000102",
+      "name": "示意客戶乙",
+      "enabled": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000103",
+      "name": "示意客戶丙",
+      "enabled": true
+    }
+  ],
+  "cases": [
+    {
+      "id": "DEMO-IMPORT",
+      "business_phase": "待受理草稿（提案）",
+      "order": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "orderNo": "DEMO-I-001",
+        "type": "IMPORT",
+        "customerId": "00000000-0000-4000-8000-000000000101",
+        "customerName": "示意客戶甲",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": {
+          "shippingCompany": "示意船公司",
+          "vesselVoyage": "DEMO-VOYAGE-I",
+          "pol": "示意裝貨港",
+          "pod": "示意卸貨港",
+          "eta": "2026-12-01T08:00:00+08:00",
+          "etd": null,
+          "blNo": "DEMO-BL-I"
+        },
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000011",
+            "sequence": 1,
+            "itemKind": "CONTAINER",
+            "containerType": "20GP",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "12000.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000012",
+            "sequence": 2,
+            "itemKind": "CONTAINER",
+            "containerType": "40HQ",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "18000.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null
+          }
+        ],
+        "tasks": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "taskNo": "DEMO-T-21",
+            "orderId": "00000000-0000-4000-8000-000000000001",
+            "itemId": "00000000-0000-4000-8000-000000000011",
+            "taskKind": "提重櫃",
+            "pickupName": "示意港區A",
+            "pickupAddress": "合成地點-港區A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T11:00:00+08:00",
+            "predecessorTaskIds": [],
+            "requiredTask": true
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000022",
+            "taskNo": "DEMO-T-22",
+            "orderId": "00000000-0000-4000-8000-000000000001",
+            "itemId": "00000000-0000-4000-8000-000000000011",
+            "taskKind": "還空櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意櫃場A",
+            "deliveryAddress": "合成地點-櫃場A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-02T09:00:00+08:00",
+            "plannedEndAt": "2026-12-02T10:00:00+08:00",
+            "predecessorTaskIds": [
+              "00000000-0000-4000-8000-000000000021"
+            ],
+            "requiredTask": true
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000023",
+            "taskNo": "DEMO-T-23",
+            "orderId": "00000000-0000-4000-8000-000000000001",
+            "itemId": "00000000-0000-4000-8000-000000000012",
+            "taskKind": "提重櫃",
+            "pickupName": "示意港區A",
+            "pickupAddress": "合成地點-港區A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T11:00:00+08:00",
+            "predecessorTaskIds": [],
+            "requiredTask": true
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000024",
+            "taskNo": "DEMO-T-24",
+            "orderId": "00000000-0000-4000-8000-000000000001",
+            "itemId": "00000000-0000-4000-8000-000000000012",
+            "taskKind": "還空櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意櫃場A",
+            "deliveryAddress": "合成地點-櫃場A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-02T09:00:00+08:00",
+            "plannedEndAt": "2026-12-02T10:00:00+08:00",
+            "predecessorTaskIds": [
+              "00000000-0000-4000-8000-000000000023"
+            ],
+            "requiredTask": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEMO-EXPORT",
+      "business_phase": "待受理草稿（提案）",
+      "order": {
+        "id": "00000000-0000-4000-8000-000000000002",
+        "orderNo": "DEMO-E-001",
+        "type": "EXPORT",
+        "customerId": "00000000-0000-4000-8000-000000000102",
+        "customerName": "示意客戶乙",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": {
+          "shippingCompany": "示意船公司",
+          "vesselVoyage": "DEMO-VOYAGE-E",
+          "pol": "示意裝貨港",
+          "pod": "示意卸貨港",
+          "eta": null,
+          "etd": "2026-12-05T08:00:00+08:00",
+          "blNo": null
+        },
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000031",
+            "sequence": 1,
+            "itemKind": "CONTAINER",
+            "containerType": "40HQ",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "18000.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null
+          }
+        ],
+        "tasks": [
+          {
+            "id": "00000000-0000-4000-8000-000000000041",
+            "taskNo": "DEMO-T-41",
+            "orderId": "00000000-0000-4000-8000-000000000002",
+            "itemId": "00000000-0000-4000-8000-000000000031",
+            "taskKind": "提空櫃",
+            "pickupName": "示意櫃場A",
+            "pickupAddress": "合成地點-櫃場A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-03T09:00:00+08:00",
+            "plannedEndAt": "2026-12-03T10:00:00+08:00",
+            "predecessorTaskIds": [],
+            "requiredTask": true
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000042",
+            "taskNo": "DEMO-T-42",
+            "orderId": "00000000-0000-4000-8000-000000000002",
+            "itemId": "00000000-0000-4000-8000-000000000031",
+            "taskKind": "交重櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意港區A",
+            "deliveryAddress": "合成地點-港區A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-04T09:00:00+08:00",
+            "plannedEndAt": "2026-12-04T11:00:00+08:00",
+            "predecessorTaskIds": [
+              "00000000-0000-4000-8000-000000000041"
+            ],
+            "requiredTask": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEMO-LOCAL",
+      "business_phase": "待受理草稿（提案）",
+      "order": {
+        "id": "00000000-0000-4000-8000-000000000003",
+        "orderNo": "DEMO-L-001",
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerName": "示意客戶丙",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000051",
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null
+          }
+        ],
+        "tasks": [
+          {
+            "id": "00000000-0000-4000-8000-000000000061",
+            "taskNo": "DEMO-T-61",
+            "orderId": "00000000-0000-4000-8000-000000000003",
+            "itemId": "00000000-0000-4000-8000-000000000051",
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "predecessorTaskIds": [],
+            "requiredTask": true
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000062",
+            "taskNo": "DEMO-T-62",
+            "orderId": "00000000-0000-4000-8000-000000000003",
+            "itemId": "00000000-0000-4000-8000-000000000051",
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "predecessorTaskIds": [
+              "00000000-0000-4000-8000-000000000061"
+            ],
+            "requiredTask": true
+          }
+        ]
+      }
+    }
+  ],
+  "minimalDraft": {
+    "business_phase": "待受理草稿（P01 提案）",
+    "order": {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "orderNo": "DEMO-DRAFT-001",
+      "type": "IMPORT",
+      "customerId": "00000000-0000-4000-8000-000000000101",
+      "customerName": "示意客戶甲",
+      "customerReference": null,
+      "remark": "只供 P01 草稿保存規則審閱",
+      "shipping": null,
+      "items": [],
+      "tasks": []
+    }
+  }
+}

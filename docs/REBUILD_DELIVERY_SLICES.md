@@ -12,6 +12,10 @@
 
 使用者已採用 [T01–T05 技術方案](TECHNOLOGY_AND_DATA_PROPOSAL.md)，ADR-0002～0006 為 Accepted。第一片依 Java 21／Boot 4.1.x、React／TypeScript／Vite、PostgreSQL 17、JPA、Flyway、Session／CSRF 規劃；精確版本、相依整合、M01–M03 資料路線、業務欄位及環境前提仍須完成。T06 照片／部署仍是候選。
 
+## 首片欄位與驗收輸入
+
+已整理 [首片訂單規格提案](FIRST_SLICE_ORDER_SPEC.md)、[欄位 CSV](FIRST_SLICE_ORDER_FIELDS.csv) 及 [三類合成案例](FIRST_SLICE_ORDER_EXAMPLES.json)。保存草稿與受理完整性分開，P01～P03、精確欄位／例外仍待採用；受理／派工等銜接規則不自動擴張首片實作範圍，也不改變完整 MVP。
+
 ## 第一個開發切片：新版主檔與多段訂單可保存、可重讀
 
 建議操作路徑：管理員／調度登入 → 建立或選取客戶與車司機主檔 → 建立含多個項目及各自多段任務的訂單 → 重新整理與重新開啟明細 → 查回同一組已保存關係。
