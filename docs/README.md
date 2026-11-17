@@ -1,12 +1,12 @@
 # XK Logistic 製作文件
 
-初版文件日期：2026-10-15；狀態更新：2026-11-17（Asia/Taipei）。新版重建方向與部分產品基準已確認；其餘子項、技術及上線決策待確認，產品尚未實作。
+初版文件日期：2026-10-15；狀態更新：2026-11-17（Asia/Taipei）。新版重建方向、部分產品基準及 Java／React／PostgreSQL／JPA／Flyway／Session 技術方案已確認；其餘子項、資料接續與上線決策待確認，產品尚未實作。
 
 本次任務是統整 GitHub 與本機 truck／logistic 專案，讓 2026-10-16 的雲端工作能直接延續。上傳文件不代表同意技術選型、功能範圍或開始開發。
 
 ## 最新入口
 
-- [技術選型與資料接續建議](TECHNOLOGY_AND_DATA_PROPOSAL.md)：具體建議、官方查核與五份 Proposed ADR；待逐項選定，資料接續現況維持待確認。
+- [已採用技術與資料接續提案](TECHNOLOGY_AND_DATA_PROPOSAL.md)：六項技術方案已採用，五份 ADR 轉為 Accepted；精確版本／整合待驗證，資料接續現況維持待確認。
 
 - [決策與剩餘子項](06-decisions-and-acceptance.md)：已確認基準優先於舊文件的概括未決說法。
 - [重建方向 ADR](adr/ADR-0001.md)、[功能差異矩陣](TRUCK_PLATFORM_TO_LOGISTICS_MATRIX.md)。

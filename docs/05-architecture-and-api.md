@@ -21,21 +21,22 @@ compose.yaml              確認後建立本機服務
 
 ## 最新技術提案
 
-2026-11-17 已補 [分項技術選型／官方支援查核及資料接續提案](TECHNOLOGY_AND_DATA_PROPOSAL.md)。其中建議 Boot 4.1.x、PostgreSQL 17、JPA、Session／CSRF 與 Flyway，各自仍為 Proposed；以下原候選及 API 草案保留，未建立程式、正式 OpenAPI 或核准安全政策。
+2026-11-17 使用者回覆「是！採用」，已確認 [Java 21／Boot 4.1.x、React／TypeScript／Vite、PostgreSQL 17、JPA、Session／CSRF 與 Flyway](TECHNOLOGY_AND_DATA_PROPOSAL.md)，ADR-0002～0006 為 Accepted。以下保留已採用基準與剩餘細節，精確版本、詳細授權／復原及環境待定；本輪未建立程式或正式 OpenAPI。
 
-## 選型候選
+## 已採用技術與剩餘選項
 
-| 項目 | 建議 | 尚待決定 |
+| 項目 | 已採用／候選 | 仍待完成 |
 |---|---|---|
-| 前端 | React／TypeScript／Vite／Tailwind，自有元件 | 版型與是否有可用 Metronic 授權 |
-| 後端 | Java 21／Spring Boot／Spring Security | 實作時確認受支援且相容的精確版本 |
-| DB | PostgreSQL 17／Flyway，對齊 G2 | 是否保留 MySQL 與舊資料遷移 |
-| 資料存取 | 明確 SQL／JDBC 或 JPA 搭配投影均可 | G2 用 JDBC、G1 用 JPA；不能以換 DB 自動決定 ORM |
-| 認證 | 伺服器 Session＋CSRF | 是否需要外部 App token 用例 |
-| 檔案 | S3 相容儲存介面；本機可用本機 adapter | 供應商、容量、保存期限與存取政策 |
+| 前端 | 已採用 React／TypeScript／Vite | 精確版本、UI 元件／樣式及資產授權待定；Tailwind 仍為候選 |
+| 後端 | 已採用 Java 21／Spring Boot 4.1.x；Spring Security 實作 Session／CSRF | 核對並鎖定修補版及相容 BOM／工具 |
+| DB | 已採用 PostgreSQL 17 | 修補版與相依待驗證；舊 MySQL 資料是否／如何接續仍待 D07 |
+| 資料存取 | 已採用 Spring Data JPA；查詢視需要用投影／明確查詢 | Entity／交易／鎖與效能依核定業務規格設計、驗收 |
+| 認證 | 已採用同源瀏覽器 Session＋CSRF | 詳細逾時、復原、各動作資料授權待 D02／D10；外部 App 是後續候選 |
+| 結構版本 | 已採用 Flyway，JPA 驗證映射 | PostgreSQL module／版本與空庫／升級驗收待完成 |
+| 檔案 | 候選：S3 相容儲存介面；開發本機 adapter | 供應商、容量、保存期限與存取政策 |
 | 部署 | 前後端獨立建置，反向代理同源 /api | 雲端平台、staging／production 與網域 |
 
-「前後端分離」為程式、契約、建置與測試分離；不要求不同網域或微服務。沿 G2 的同源代理可簡化 Cookie 與 CSRF。Session Cookie 採 Secure／HttpOnly／SameSite，寫入檢查 CSRF 與來源；登出與停權能撤銷存取。前端不在 localStorage 保存長效登入 token。這些是推薦基準，實作前仍須確認 D01。
+「前後端分離」為程式、契約、建置與測試分離；不要求不同網域或微服務。沿 G2 的同源代理可簡化 Cookie 與 CSRF。Session Cookie 採 Secure／HttpOnly／SameSite，寫入檢查 CSRF 與來源；登出與停權能撤銷存取。前端不在 localStorage 保存長效登入 token。Session＋CSRF 技術選擇已確認；具體 Cookie／逾時、停權及授權細節依 D02／D10 定稿並驗收。
 
 ## API 共通規範候選
 

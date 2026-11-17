@@ -1,18 +1,18 @@
-# Logistics 技術選型與資料接續建議
+# Logistics 技術基準與資料接續提案
 
-查核日期：2026-11-17（Asia/Taipei）。主要任務：[Issue #4](https://github.com/xk2022/codex-xk-logistic/issues/4)。狀態：Proposed，供使用者逐項選定；本次合併文件只交付提案，不核准技術、政策、資料遷移或產品開工。
+查核日期：2026-11-17（Asia/Taipei）。主要任務：[Issue #4](https://github.com/xk2022/codex-xk-logistic/issues/4)。狀態更新：使用者回覆「是！採用」，已採用前一則列出的六項技術方案，對應 T01–T05 與 ADR-0002～0006。精確版本與整合待驗證；T06 照片／部署及 M01–M03 資料接續未獲選定。
 
-## 建議方案
+## 已採用的技術基準與剩餘候選
 
-已確認產品基準見 [決策頁](06-decisions-and-acceptance.md)：單公司三角色、一單多項目多段、手機照片回報，以及撤改派與作業完成／人車可離場後釋放規則。本頁提出具體預設，降低下次決策負擔；各列可以分別接受或調整。
+已確認產品基準見 [決策頁](06-decisions-and-acceptance.md)：單公司三角色、一單多項目多段、手機照片回報，以及撤改派與作業完成／人車可離場後釋放規則。本頁保留原比較依據，記錄已採用的技術與尚待確認的細節；後續變更以新決策留史。
 
-| 決策 | 建議預設 | 理由與代價 | 狀態／紀錄 |
+| 決策 | 採用／候選方案 | 理由與代價 | 狀態／紀錄 |
 |---|---|---|---|
-| T01 應用結構 | Java 21＋Spring Boot 4.1.x；React＋TypeScript＋Vite；前後端分開建置，後端模組化單體、以同源 /api 提供服務 | 延續既有 Java／React 與領域邊界，便於用單一交易保護派工；Boot 4 新依賴與整合方式需重新驗證。獨立 repo／部署的公司共用模組仍另評估，不先抽成共享服務 | 待選定，[ADR-0002](adr/ADR-0002.md) |
-| T02 資料庫 | PostgreSQL 17；核定時採該版仍受支援的最新修補版 | 延續既有新版候選及 Rotaract 的運作方向；是否有舊 MySQL 資料須接續仍未知，須另驗證型別、時間、唯一性及鎖語意 | D01 待確認，[ADR-0003](adr/ADR-0003.md)；不綁認證或 ORM |
-| T03 資料存取 | Spring Data JPA 為主，複雜查詢用投影／明確查詢；Service 管理交易 | 符合本庫 AGENTS 的 Code First／JPA 優先規範；派工需額外設計資料庫約束、鎖及競爭測試，使用 ORM 本身不保證正確 | D01 待確認，[ADR-0004](adr/ADR-0004.md) |
-| T04 登入 | 同源瀏覽器的 Session＋CSRF | 已核定首版為內部網頁與手機瀏覽器；目前沒有外部 App／第三方 API 授權需求證據。需處理登入／登出後 CSRF 更新、停權失效及本人任務授權 | D01／D02／D10 待確認，[ADR-0005](adr/ADR-0005.md)；認證政策選定後才實作 |
-| T05 Schema 版本管理 | Flyway 管結構，Hibernate 只驗證映射 | 讓空庫重建及升級有版本紀錄；仍須測試 DB 特定模組、DDL 與升級結果。資料匯入是另外的遷移工作 | D01 待確認，[ADR-0006](adr/ADR-0006.md) |
+| T01 應用結構 | Java 21＋Spring Boot 4.1.x；React＋TypeScript＋Vite；前後端分開建置，後端模組化單體、以同源 /api 提供服務 | 延續既有 Java／React 與領域邊界，便於用單一交易保護派工；Boot 4 新依賴與整合方式需重新驗證。獨立 repo／部署的公司共用模組仍另評估，不先抽成共享服務 | 已採用，[ADR-0002](adr/ADR-0002.md) |
+| T02 資料庫 | PostgreSQL 17；核定時採該版仍受支援的最新修補版 | 延續既有新版候選及 Rotaract 的運作方向；是否有舊 MySQL 資料須接續仍未知，須另驗證型別、時間、唯一性及鎖語意 | D01 資料庫基準已採用，[ADR-0003](adr/ADR-0003.md)；不綁認證或 ORM |
+| T03 資料存取 | Spring Data JPA 為主，複雜查詢用投影／明確查詢；Service 管理交易 | 符合本庫 AGENTS 的 Code First／JPA 優先規範；派工需額外設計資料庫約束、鎖及競爭測試，使用 ORM 本身不保證正確 | D01 ORM 已採用，[ADR-0004](adr/ADR-0004.md) |
+| T04 登入 | 同源瀏覽器的 Session＋CSRF | 已核定首版為內部網頁與手機瀏覽器；目前沒有外部 App／第三方 API 授權需求證據。需處理登入／登出後 CSRF 更新、停權失效及本人任務授權 | 認證技術已採用，[ADR-0005](adr/ADR-0005.md)；D02／D10 細部授權／復原政策仍待確認 |
+| T05 Schema 版本管理 | Flyway 管結構，Hibernate 只驗證映射 | 讓空庫重建及升級有版本紀錄；仍須測試 DB 特定模組、DDL 與升級結果。資料匯入是另外的遷移工作 | D01 migration 工具已採用，[ADR-0006](adr/ADR-0006.md) |
 | T06 照片／部署 | 保留 S3 相容儲存介面候選；開發測試與正式部署分開規劃，供應商及正式環境暫不定案 | 照片容量／保留／存取與復原責任未決，無資料可核定 NAS 或雲端供應商成本 | D06／D10 待確認；沿用 L4 提案，不新增採購或部署承諾 |
 
 ## 官方版本查核與相容性工作
@@ -21,10 +21,10 @@
 
 - Spring 官方 2026-06-25 的 3.5.16 發布公告說明 3.5.x 開源支援已結束，並列 4.0／4.1 作後續支援方向；官方 wiki 也列 4.1／4.0 為維護中版本。[發布公告](https://spring.io/blog/2026/06/25/spring-boot-3-5-16-available-now/)／[專案 wiki](https://github.com/spring-projects/spring-boot/wiki)。
 - 本次 [Spring Boot 系統需求頁](https://docs.spring.io/spring-boot/system-requirements.html) 顯示 4.1.2、Java 17–27 與 Servlet 6.1 容器需求，Java 21 在此範圍內。建議從 Boot 4.1.x 評估，而不把舊 repo 的 3.5.7 設定複製為新版基準；4.1.2 只是本次文件快照，開工時再核定精確修補版。
-- [PostgreSQL 版本政策](https://www.postgresql.org/support/versioning/) 本次列 17.12 與 17 系列支援至 2029-11-08。採 17 是與既有候選一致的提案；實際 DB／映像標籤與修補版本待選定後鎖定，不改動任何既有 DB。
+- [PostgreSQL 版本政策](https://www.postgresql.org/support/versioning/) 本次列 17.12 與 17 系列支援至 2029-11-08。採用 17 的技術選擇已確認；實際 DB／映像標籤與修補版本待實作前鎖定，不改動任何既有 DB。
 - [Spring Data JPA Locking](https://docs.spring.io/spring-data/jpa/reference/jpa/locking.html) 提供查詢方法鎖模式機制。新版仍要先定合法狀態、唯一有效占用及鎖順序，再以真實選定 DB 驗證競爭結果；本頁不寫入正式 schema。
 - [Spring Boot DB 初始化](https://docs.spring.io/spring-boot/how-to/data-initialization.html) 說明使用單一結構建立機制及 Flyway 的資料庫模組；PostgreSQL 需配相應模組。新增依賴前需確認與選定 Boot 的 BOM／starter 相容，不能只加 flyway-core 就視為整合完成。
-- [Spring Security CSRF](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html) 說明 SPA 的 CSRF 整合及登入／登出後更新 token。使用者選定方案後才落實登入、授權與帳號復原設定。
+- [Spring Security CSRF](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html) 說明 SPA 的 CSRF 整合及登入／登出後更新 token。認證技術已確認，登入／登出與 CSRF 實作依此基準；細部授權、帳號復原及業務操作範圍仍需定稿。
 
 開工前需要產出精確相依表：JDK／Boot／Security／Data JPA／Hibernate／DB driver／Flyway 與 DB module／前端建置工具／API 文件工具。Boot BOM 可管理者先使用相容組合；未核對的 API 文件外掛、圖片處理及儲存 SDK 不先選版本。記錄 artifact、版本、來源、授權及驗證結果後才加入專案；本輪未解析或安裝依賴，未聲稱組合可建置。
 
@@ -40,19 +40,19 @@
 
 共同必填事實：是否有需接續的資料；權威來源／資料擁有人；DB 類型與版本；資料量及在途數；照片關聯；保留義務；可還原備份及可接受切換窗口。只將去識別結構／統計作規劃輸入，正式資料不進公開 repo。
 
-技術比較可先完成，DB／搬遷定案仍依 L3 的來源門檻；沒有回覆不表示 M01、M02 或 M03 已獲選定。開發測試採合成資料的提案，也不能推論正式資料不需搬遷。
+新版 DB 基準已由使用者選為 PostgreSQL 17；L3 的來源門檻持續適用於資料接續、映射、試遷與切換。使用者採用技術方案沒有回答正式資料現況，M01、M02、M03 仍未選定。開發測試採合成資料的提案，也不能推論正式資料不需搬遷。
 
 ## 對第一個切片的實際影響
 
 | 首片「主檔與多段訂單可保存、可重讀」 | 目前可以完成的規劃 | 開工前仍需收斂 |
 |---|---|---|
-| 建立可重現工程環境 | 分項技術建議、官方依據、精確相依核對清單 | T01–T05、測試／部署資源及 D07 資料接續事實 |
-| 登入／客戶／車司機主檔 | 依既有需求整理角色動作與必要欄位提案 | D02 詳細授權與 D10 帳號復原；不能因 T04 被建議就視為已核准 |
+| 建立可重現工程環境 | 分項技術建議、官方依據、精確相依核對清單 | T01–T05 基準已採用；精確版本／相依驗證、測試／部署資源與 D07 事實仍需完成 |
+| 登入／客戶／車司機主檔 | 依既有需求整理角色動作與必要欄位提案 | D02 詳細授權與 D10 帳號復原；T04 已採用，但精確逾時／復原與角色操作範圍仍待核定 |
 | 多項目多段建立／查詢 | 沿用已確認關聯及第一片驗收方向 | D03／D04／D08 剩餘模型、必填欄位與首版主檔 |
-| 交易／API／測試 | 定義空庫重建、重送、失敗回滾及授權反例的驗收提案 | 選型與業務契約定稿後另有實作交辦；本輪不提前建立 POM、schema 或正式 OpenAPI |
+| 交易／API／測試 | 定義空庫重建、重送、失敗回滾及授權反例的驗收提案 | 已採用技術的精確相依驗證及業務契約定稿後另有實作交辦；本輪不提前建立 POM、schema 或正式 OpenAPI |
 
-## 本輪交付與下一個決策
+## 採用紀錄與下一個決策
 
-本輪完成的是具體候選方案、五份 Proposed ADR、官方依據及資料接續路線。D01／D07／D10 不因此轉為已確認，仍沿 [主要任務](https://github.com/xk2022/codex-xk-logistic/issues/4) 追蹤。
+使用者陳祿元於 2026-11-17 明確回覆「是！採用」，採用 Java 21＋Boot 4.1.x、React＋TypeScript＋Vite、PostgreSQL 17、Spring Data JPA、Flyway、Session＋CSRF。ADR-0002～0006 已轉為 Accepted，D01 技術基準已確認，無須重複詢問。
 
-下一個可直接審閱的決策是 T01–T05：逐項採用或調整；D07 另回答「有／無／仍待查」需接續資料。其餘照片、部署與業務子項仍保留待確認。合併文件不代表產品驗收、開工、採購或正式上線授權。
+仍待確認：精確修補版／相依與整合結果、D02／D10 細部政策、D04 欄位及其他業務子項、D07 舊資料、T06 照片／部署方案。下一工作是依已定技術收斂首片必要欄位與驗收；原 G1–G5 的其餘實作前提仍按 [執行入口](LOGISTICS_EXECUTION.md) 辦理。本輪尚未建立產品程式或執行產品測試。技術採用不代表已執行資料搬遷、採購或正式上線。

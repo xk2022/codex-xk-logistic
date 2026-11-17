@@ -2,7 +2,7 @@
 
 ## 最新確認與證據
 
-2026-11-17 已確認沿用邏輯另建新版、一單多項目多段、單公司三角色、手機照片與派工／釋放原則，見 [決策頁](06-decisions-and-acceptance.md)。完整的現行差異以 [程式核對矩陣](TRUCK_PLATFORM_TO_LOGISTICS_MATRIX.md) 為準；以下保留需求來源脈絡。
+2026-11-17 已確認沿用邏輯另建新版、一單多項目多段、單公司三角色、手機照片與派工／釋放原則，見 [決策頁](06-decisions-and-acceptance.md)。技術方案亦已採用，見 [技術基準與 Accepted ADR](TECHNOLOGY_AND_DATA_PROPOSAL.md)。完整的現行差異以 [程式核對矩陣](TRUCK_PLATFORM_TO_LOGISTICS_MATRIX.md) 為準；以下保留需求來源脈絡。
 
 ## 統整結論
 
@@ -12,15 +12,15 @@
 |---|---|---|
 | 客戶 | L1 已有 name／phone；L8 CRM 有公司、多聯絡人、合約、客戶入口；G1 訂單要求 customerUuid | MVP 補上客戶主檔；合約與外部入口另確認 |
 | 訂單 | G1 分 OrderCore、TOM；目前 Controller 主要啟用建立功能，列表與明細等被註解 | 補成可驗收流程，不將註解 API 算成已完成 |
-| 貨櫃與任務 | L8 有貨櫃列表、訂單櫃數、拉板與空車回位任務 | 必須先決定一單多櫃、多段任務，再定資料模型 |
+| 貨櫃與任務 | L8 有貨櫃列表、訂單櫃數、拉板與空車回位任務 | 一單多項目／多段基準已確認；剩餘關聯與欄位收斂後定模型 |
 | 進出口 | G1 類型為 IMPORT／EXPORT／LOCAL；L8 同時存在多套進出口欄位型別 | 統一 API 大寫列舉，依類型呈現表單；各欄必填性另確認 |
 | 派工 | G1 assign 直接建立任務；start／sign／complete／cancel 直接改狀態 | 補授權、狀態檢核、資源鎖定、原子交易與歷程 |
 | 前端資料 | L8 Query 有 shouldUseMockDataWithTemp 分支與模擬成功 | 展示模式必須明示；API 錯誤不得退回假成功或偽裝空清單 |
 | 型別 | L8 混用 number／string ID、大小寫狀態、note／remark、多份介面 | UUID 字串、單一契約、明確轉換；不要複製互相矛盾的型別 |
 | 車輛狀態 | G1 文件 BUSY 與 IN_USE 混用 | 統一 AVAILABLE／IN_USE／MAINTENANCE／RETIRED |
 | 貨櫃狀態 | L8 有 UNASSIGNED、DONE；CRM 又有 arrived／returned 等 | 區分任務進度與貨櫃物流事件，不直接互轉 |
-| 認證 | G1 JWT；G2 Session＋CSRF | 建議依 G2；這是架構選擇，尚未核准 |
-| 資料庫 | G1 MySQL／JPA；G2 PostgreSQL／Flyway／JDBC | 建議 PostgreSQL＋Flyway；ORM 方式單獨決定 |
+| 認證 | G1 JWT；G2 Session＋CSRF | 已採用 Session＋CSRF；詳細授權、逾時及復原政策仍待定稿 |
+| 資料庫 | G1 MySQL／JPA；G2 PostgreSQL／Flyway／JDBC | 已採用 PostgreSQL 17、Flyway 及 JPA，分別記錄 ADR；舊資料接續仍待確認 |
 | UI | L8 Bootstrap／Metronic；G2 Tailwind 與自有元件 | 參考資訊架構與操作，不混用整套樣式或假定模板可再散布 |
 | 擴充模組 | L8 港口時段、合約計費、薪資等型別 | 保存候選需求，不能自動加入第一版 |
 
