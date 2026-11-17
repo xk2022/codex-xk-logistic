@@ -6,6 +6,8 @@
 
 ## 最新入口
 
+- [技術選型與資料接續建議](TECHNOLOGY_AND_DATA_PROPOSAL.md)：具體建議、官方查核與五份 Proposed ADR；待逐項選定，資料接續現況維持待確認。
+
 - [決策與剩餘子項](06-decisions-and-acceptance.md)：已確認基準優先於舊文件的概括未決說法。
 - [重建方向 ADR](adr/ADR-0001.md)、[功能差異矩陣](TRUCK_PLATFORM_TO_LOGISTICS_MATRIX.md)。
 - [舊碼靜態核對與固定版本證據](SOURCE_CODE_AUDIT_20261117.md)、[45 個來源檔案清單](SOURCE_AUDIT_MANIFEST_20261117.json)。
