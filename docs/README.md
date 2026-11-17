@@ -1,15 +1,18 @@
 # XK Logistic 製作文件
 
-初版文件日期：2026-10-15；狀態更新：2026-11-17（Asia/Taipei）。新版重建方向、ORD-P01～P03建單基準及 Java／React／PostgreSQL／JPA／Flyway／Session 技術方案已確認；其餘子項、資料接續與上線決策待確認，產品尚未實作。
+初版文件日期：2026-10-15；狀態更新：2026-11-17（Asia/Taipei）。新版重建方向、ORD-P01～P03建單基準及 Java／React／PostgreSQL／JPA／Flyway／Session 技術方案已確認；本次詢問的舊客戶／訂單／照片無需接續（M01）；其餘子項與上線決策待確認，產品尚未實作。
 
 本次任務是統整 GitHub 與本機 truck／logistic 專案，讓 2026-10-16 的雲端工作能直接延續。上傳文件不代表同意技術選型、功能範圍或開始開發。
 
 ## 最新入口
 
+- [全新啟用決策ADR-0007](adr/ADR-0007.md)：使用者明確回答沒有必須保留的舊Truck客戶／訂單／照片；本次不做舊資料匯入。
+- [首片權限與測試環境提案](FIRST_SLICE_ACCESS_AND_TEST_PLAN.md)：ACC-P01／P02與DEV-P01為待確認方案，未變更授權或建立環境。
+
 - [首片訂單欄位與驗收規格](FIRST_SLICE_ORDER_SPEC.md)：P01～P03已採用；40筆定義區分採用範圍及待決例外，產品驗收尚未執行。
 - [首片資料模型](FIRST_SLICE_DATA_MODEL.md)、[OpenAPI契約與說明](api/README.md)：草稿建立／替換／清單／明細／只讀完整性，含穩定ref、聚合版本、重送及合成正反例；尚無產品程式或已部署服務。
 
-- [已採用技術與資料接續提案](TECHNOLOGY_AND_DATA_PROPOSAL.md)：六項技術方案已採用，五份 ADR 轉為 Accepted；精確版本／整合待驗證，資料接續現況維持待確認。
+- [已採用技術與資料接續提案](TECHNOLOGY_AND_DATA_PROPOSAL.md)：六項技術方案已採用，五份 ADR 轉為 Accepted；精確版本／整合待驗證；D07本次採M01全新啟用。
 
 - [決策與剩餘子項](06-decisions-and-acceptance.md)：已確認基準優先於舊文件的概括未決說法。
 - [重建方向 ADR](adr/ADR-0001.md)、[功能差異矩陣](TRUCK_PLATFORM_TO_LOGISTICS_MATRIX.md)。
