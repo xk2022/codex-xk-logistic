@@ -1,5 +1,9 @@
 # 來源盤點與證據
 
+## 2026-11-17 來源補充
+
+已重新取得舊平台完整樹並靜態讀取 45 個檔案，固定版本與觀察見 [舊碼核對](SOURCE_CODE_AUDIT_20261117.md) 及 [檔案清單](SOURCE_AUDIT_MANIFEST_20261117.json)。本頁的 2026-10 本機盤點是歷史來源，本輪沒有重新存取那些本機目錄或正式 DB。
+
 ## 搜尋方式與限制
 
 2026-10-15 搜尋本機使用者家目錄中名稱包含 truck 或 logistic 的目錄（不分大小寫），另檢查命中專案的父層。第一輪針對 projects、Documents、Desktop、Downloads 與常見開發目錄；第二輪家目錄搜尋深度最多八層，略過隱藏目錄、Library、node_modules、target、dist、build、Pods 與虛擬機。這是可讀開發目錄的搜尋結果，並非整台電腦每個磁碟與壓縮檔的完整鑑識。
