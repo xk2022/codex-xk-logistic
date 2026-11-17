@@ -51,13 +51,13 @@
 - 中央規範為基線，專案可加嚴；不得自行放寬安全與核准要求。各 Repo 必須有可直接讀取的規範副本，不假設 Codex 自動跨 Repo 讀取。
 
 ## Unresolved Decisions
-縮排、UUID 版本、API 分頁起點/錯誤碼、Migration 工具、CI 實作與中央規範同步方式未定，不得擅自當成已核准的標準。
+中央基線的縮排、UUID 版本、API 分頁起點/錯誤碼、Migration 工具、CI 實作與同步方式未統一定案，不得擅自當成中央已核准標準。本產品已於 2026-11-17 選定 Flyway（ADR-0006），此產品決策不代表中央規範已統一採用。
 
 
 ---
 
 ## codex-xk-logistic 專案補充
-- 此 Repository 目前以物流需求盤點、Gap Analysis、產品規格、Domain Workflow、架構/API 與驗收交接文件為主；尚未確認實作技術棧，不得自行假設已建立 Java 專案。
+- 此 Repository 目前以物流需求與交付文件為主；使用者於 2026-11-17 已採用 Java 21／Spring Boot 4.1.x、React／TypeScript／Vite、PostgreSQL 17、Spring Data JPA、Flyway、Session／CSRF，見 docs/adr/ADR-0002.md 至 ADR-0006.md。精確版本／整合待驗證；尚未建立新版產品程式，不得憑技術採用宣稱已實作。
 - 開始任何實作前，先閱讀 docs/README.md 與 docs/01-source-inventory.md 至 docs/07-cloud-handoff.md，辨識已核准需求、待決策與交付界線。
 - 現有文件命名與路徑屬既有交接契約，除非另外核准，不因中央 UPPER_SNAKE_CASE 規範而批次改名。
 - 不得憑空補齊物流業務規則、資料庫結構、客戶資料或外部串接設定；不確定的高風險事項先詢問。
