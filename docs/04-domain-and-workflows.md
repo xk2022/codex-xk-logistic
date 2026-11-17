@@ -1,18 +1,20 @@
 # 資料模型與流程草案
 
+狀態更新（2026-11-17）：已確認模型、派工及釋放基準見 [決策紀錄](06-decisions-and-acceptance.md)。本頁是概念與候選欄位，尚非正式 DB／OpenAPI；其餘代碼、技術、欄位與例外不因本次同步而核准。
+
 ## 領域邊界與關聯
 
 - UPMS：帳號、角色、權限與關聯。
 - ADM：字典分類、項目、參數。
 - CRM：客戶及聯絡人。
 - OrderCore：訂單身份、編號與高階生命週期。
-- TOM：運輸訂單、貨櫃／貨物項目與運輸任務（後兩者範圍待確認）。
+- TOM：運輸訂單、貨櫃／貨物項目與運輸任務；多項目／多段基準已確認，欄位及剩餘子項待定稿。
 - FMS：司機、車輛、派工與資源占用。
 - Assets／Audit：簽收資產與操作歷程。
 
-OrderCore 與 TomOrder 共用 orderUuid。若採多段模式，TransportTask 表達「搬什麼、從哪到哪」，Dispatch 表達「誰、用什麼資源、何時執行」，避免 TOM 任務與 FMS 派工各自變成兩個互相矛盾的執行狀態來源。
+OrderCore 與 TomOrder 共用 orderUuid。依已確認多段基準，TransportTask 表達「搬什麼、從哪到哪」，Dispatch 表達「誰、用什麼資源、何時執行」，避免 TOM 任務與 FMS 派工各自變成兩個互相矛盾的執行狀態來源。
 
-候選基數：Customer 1:N Order；Order 1:N ContainerItem；Order 1:N TransportTask；Task N:1 ContainerItem（可空）；Task 1:N DispatchHistory，最多一個有效 Dispatch。獨立空車／板車任務可不關聯訂單，由 D03 決定。此模型並未建立資料表。
+已確認的基數基準：Order 1:N 貨櫃／貨物項目；每項目 1:N TransportTask；每個 Task 可保留派工歷史，同時最多一組有效 Dispatch，執行依前置條件。Customer 關聯與各欄位仍待模型定稿；獨立空車／板車任務是否可不關聯訂單、合載及板車分離等由 D03 決定。本頁沒有建立資料表。
 
 ## 基礎欄位
 
@@ -23,7 +25,7 @@ OrderCore 與 TomOrder 共用 orderUuid。若採多段模式，TransportTask 表
 | 車輛 | UUID、唯一車牌、車型、品牌型號、capacityTon、狀態 |
 | 司機 | UUID、關聯 accountId、姓名、電話、駕照類型、在職狀態、onDuty |
 | 運輸任務 | UUID、taskNo、標的類型、標的識別、起終點、預定開始時間、orderId／containerItemId（可空）、remark |
-| 派工 | UUID、taskId（或簡化版 orderId）、driverId、vehicleId、選配 trailerId、狀態、指派／出發／簽收／完成時間 |
+| 派工 | UUID、taskId（以運輸任務為指派單位）、driverId、vehicleId、選配 trailerId、狀態、指派／出發／簽收／完成時間 |
 | 簽收 | 所屬派工、資產 ID、上傳者、時間、備註；檔案規格及保存期限待定 |
 | 歷程 | UUID、對象與 ID、動作、前後狀態、操作者、時間、原因、requestId |
 
@@ -57,7 +59,7 @@ OrderCore 與 TomOrder 共用 orderUuid。若採多段模式，TransportTask 表
 
 建議：建立訂單同交易建立 Core 與 TOM；受理須 OPEN＋NEW；派工須 OPEN＋ACCEPTED（多任務模式另算整體安排狀態）；車可用、司機 ACTIVE＋onDuty 且無有效占用。出發只允許 ASSIGNED，簽收只允許 IN_PROGRESS，後台完成只允許 SIGNED。若簽收照片列必填，未有通過驗證的資產不可簽收。
 
-取消：原 TOM 規則禁止 ASSIGNED 後取消，FMS 卻直接允許 cancel，存在衝突。新版尚未核定例外。候選是出發前可撤派／改派，需原因；出發後不直接取消，走異常處理。取消訂單與取消單一派工不同，不得相互隱含。
+取消：原 TOM 規則禁止 ASSIGNED 後取消，FMS 卻直接允許 cancel，存在衝突。新版已確認出發前可撤派／改派並留史、出發後走異常流程；具體原因欄位、異常處置及授權仍待 D05。取消訂單與取消單一派工不同，不得相互隱含。
 
 多任務結案：建議所有必要任務 COMPLETED、無未處理異常，才可 CLOSED。單一派工完成不能直接關閉仍有其他任務的訂單。撤派後 TOM 回 ACCEPTED 或維持最後安排狀態需 D05 決定，必須留史。
 
@@ -67,5 +69,5 @@ OrderCore 與 TomOrder 共用 orderUuid。若採多段模式，TransportTask 表
 - 同一車輛／司機的有效占用採資料庫唯一約束搭配鎖定或等效機制，固定鎖定順序。
 - 編輯採 version，衝突回 409；不得覆寫他人最新修改。
 - 建立、派工、簽收與完工等重送敏感操作定義 Idempotency-Key；相同 key 不重做副作用，不同內容回 409。
-- 完成後釋放資源的時間（簽收或後台完成）屬 D09，避免等待後台確認期間錯誤阻擋下一單。
+- 已確認該段作業完成且人車可離場後釋放，行政確認分開；具體確認人／事件、等待裝卸與例外依 D09 定稿，不自動將簽收等同可離場。
 - 儲存時間用可表示 UTC 的型別，API ISO 8601 含時區；日期型欄位不可當 UTC 午夜任意轉換。

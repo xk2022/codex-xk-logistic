@@ -1,0 +1,233 @@
+{
+  "repository": "xk2022/xk-truck-platform",
+  "commit": "7b115c1f20bf723b3931f0547a34032e52649931",
+  "checked_at": "2026-11-17 Asia/Taipei",
+  "tree_truncated": false,
+  "read_files": [
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/controller/api/TomOrderController.java",
+      "blob_sha": "13de8aaac6df5bd2989786ade8594b2fcd4c1165",
+      "lines": 160
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/application/service/CreateTomOrderService.java",
+      "blob_sha": "2c2a927353e43b52030acda27048100072f4afe3",
+      "lines": 109
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/domain/model/TomOrder.java",
+      "blob_sha": "bc9c4172f3f6f29a6b89c1d1424d319ce67927bb",
+      "lines": 191
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/domain/model/vo/ContainerInfo.java",
+      "blob_sha": "2a07001b5e4dbe8f5b5381c289ccb5f98bdafd88",
+      "lines": 12
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/domain/model/vo/RoutePlan.java",
+      "blob_sha": "895f3d324d7ca7aef315788e780fb29b222ede7b",
+      "lines": 10
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/controller/api/DispatchController.java",
+      "blob_sha": "b6c81fdcf402049699426efe07dacecaa5c1a856",
+      "lines": 46
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/service/DispatchService.java",
+      "blob_sha": "4157da4c318fc3a8be009fb0f002be07f86f26bc",
+      "lines": 66
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/model/DispatchTask.java",
+      "blob_sha": "d7445806d9f81fee811671a0c040d9797fa36680",
+      "lines": 47
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/repository/DispatchTaskRepository.java",
+      "blob_sha": "ea04798798be8b259440f1c65e8c3b27b033718f",
+      "lines": 18
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/ordercore/domain/model/OrderCore.java",
+      "blob_sha": "c230be815c330e32947293098bbd76ce3cc9d516",
+      "lines": 145
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/ordercore/application/service/CreateOrderCoreService.java",
+      "blob_sha": "f2ae0179e3ddec9d2410c4e5752f35036da8c9b0",
+      "lines": 72
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/controller/api/UpmsUserController.java",
+      "blob_sha": "918232654b0ea1d98d5b6ad1e5b41b3be06ac403",
+      "lines": 172
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/application/UpmsUserService.java",
+      "blob_sha": "1d5c4c242d73b8d1b8b63be0eb939e1786960015",
+      "lines": 445
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/adm/controller/api/AdmDictController.java",
+      "blob_sha": "43ca4da47c36131e2429d185faf508aa46518812",
+      "lines": 286
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/adm/controller/api/SysParamController.java",
+      "blob_sha": "127ccbf5c5196bf5e64074b752bbb66894e40830",
+      "lines": 27
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/adm/domain/service/impl/AdmDictCategoryServiceImpl.java",
+      "blob_sha": "650adccd8e702bc13c4a6799ef79f5d46d8cde09",
+      "lines": 205
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/adm/domain/service/impl/AdmDictItemServiceImpl.java",
+      "blob_sha": "565c11790ecc5b195dc444992419ba40eb160811",
+      "lines": 208
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/adm/domain/service/SysParamService.java",
+      "blob_sha": "c707773850c5b8d5ac317cb95cf0288c42b7e57b",
+      "lines": 28
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/controller/api/DriverController.java",
+      "blob_sha": "7149c5605c5ba7da87703e94e083df2c3da46098",
+      "lines": 77
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/controller/api/VehicleController.java",
+      "blob_sha": "10afec90afaed521c793b5353c7e4152dbe93626",
+      "lines": 75
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/service/DriverService.java",
+      "blob_sha": "6069fc9db20f75924679ee65fb5a5e47f4a4e7cb",
+      "lines": 93
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/service/VehicleService.java",
+      "blob_sha": "840936490d1ac595b858602adc5cb8a3f434066b",
+      "lines": 126
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/model/Driver.java",
+      "blob_sha": "7830531029963a5a087fbbb6305d231783fe8c1d",
+      "lines": 66
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/model/Vehicle.java",
+      "blob_sha": "dabd0326d052d44f7245273a861c9f69ae8b5e20",
+      "lines": 61
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/tom/infra/persistence/entity/TomOrderEntity.java",
+      "blob_sha": "45648cb2f1f4dfa6f26307797d505f5da5d5d05d",
+      "lines": 123
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/controller/api/UpmsRoleController.java",
+      "blob_sha": "768bedf5cc5ac5bbb0a847b62d0001b847c16f52",
+      "lines": 175
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/controller/api/UpmsPermissionController.java",
+      "blob_sha": "c693e617b81cb047443e46222c4074a008453107",
+      "lines": 125
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/application/AuthService.java",
+      "blob_sha": "0ae66f64e22d71c942c28065002276bb59fcd816",
+      "lines": 382
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/infra/security/DbUserDetailsService.java",
+      "blob_sha": "425df2f61e0515996add1b30f91fbf2beab5a8d4",
+      "lines": 60
+    },
+    {
+      "path": "xk-base/src/main/java/com/xk/base/security/SecurityAutoConfig.java",
+      "blob_sha": "e645da281219480252cd8206d603a2521a3648ec",
+      "lines": 116
+    },
+    {
+      "path": "xk-base/src/main/java/com/xk/base/domain/model/BaseEntity.java",
+      "blob_sha": "dee5a5b9e2e1c98c75aa9afaf50d759f07edb365",
+      "lines": 111
+    },
+    {
+      "path": "xk-truck/src/test/java/com/xk/AppTest.java",
+      "blob_sha": "262734d5a4583422575079dcbd1d782c2f0183ea",
+      "lines": 35
+    },
+    {
+      "path": "xk-truck/src/test/java/com/xk/truck/api/AuthControllerIT.java",
+      "blob_sha": "bddd22e4ff603ab0ffdb6ae366deeb48bb6dc7fc",
+      "lines": 109
+    },
+    {
+      "path": "xk-truck/pom.xml",
+      "blob_sha": "30136e1689951cc9c8456cf89cfefb7a368f563c",
+      "lines": 122
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/application/UpmsRoleService.java",
+      "blob_sha": "15903fffbf4f9ce3077f9fb27edd4dde72ce3c2c",
+      "lines": 365
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/application/UpmsPermissionService.java",
+      "blob_sha": "9edb1fc1b007c1d72f92d1c763f7600aaed707fd",
+      "lines": 294
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/application/UpmsUserRoleService.java",
+      "blob_sha": "d853d617951843cf0c5fee50a1adbfef07458e0c",
+      "lines": 292
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/application/UpmsRolePermissionService.java",
+      "blob_sha": "eb996cac43063d596f0e91005d4d49f9942fce87",
+      "lines": 341
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/upms/controller/api/AuthController.java",
+      "blob_sha": "586146f4fdaa867017289f480e49964b4f30a745",
+      "lines": 180
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/adm/domain/model/AdmDictCategory.java",
+      "blob_sha": "21272a05637efb466f7e6356ab689a3d60306a00",
+      "lines": 53
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/adm/domain/model/AdmDictItem.java",
+      "blob_sha": "4c09734d0501d91544dc5f36ccaca96c2b372ff7",
+      "lines": 58
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/fms/domain/model/VehicleStatus.java",
+      "blob_sha": "afadb43156471730490626fa7546a2959c3cddb3",
+      "lines": 25
+    },
+    {
+      "path": "pom.xml",
+      "blob_sha": "86c55e832dee9d500f2c3d6d574d90c10efa5836",
+      "lines": 159
+    },
+    {
+      "path": "xk-base/pom.xml",
+      "blob_sha": "fa53b68c27bf8f8c9defbe011bd229d2ce0f4adc",
+      "lines": 119
+    },
+    {
+      "path": "xk-truck/src/main/java/com/xk/truck/config/TruckSecurityHandlerConfig.java",
+      "blob_sha": "54a495e2fa9cd77536b0a020ddcd2c6839414058",
+      "lines": 54
+    }
+  ]
+}

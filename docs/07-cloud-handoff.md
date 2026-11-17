@@ -1,6 +1,12 @@
 # 2026-10-16 雲端接續交接
 
-## 目前狀態
+## 現行接手入口（2026-11-17）
+
+本頁保留前輪交接歷史；目前以 [決策紀錄](06-decisions-and-acceptance.md)、[靜態原碼核對](SOURCE_CODE_AUDIT_20261117.md)、[差異矩陣](TRUCK_PLATFORM_TO_LOGISTICS_MATRIX.md) 及 [新版交付切片](REBUILD_DELIVERY_SLICES.md) 為入口。重建方向與部分業務基準已獲明確確認，未決子項不視為核准；新版程式尚未實作。
+
+主要產品任務現已建立為 [Issue #4](https://github.com/xk2022/codex-xk-logistic/issues/4)，前輪 API 403 與未建 Issue 的描述屬歷史。後續進度集中原任務，不重建重複工作包。
+
+## 目前狀態（原交接歷史）
 
 本 repo 是 codex-xk-logistic。已完成 GitHub 兩個指定來源與本機 truck／logistic 專案靜態盤點，並將統整文件放在 docs。尚未建立 frontend、backend、資料庫、OpenAPI 正式契約或部署服務。使用者要求先確認規格再實作，這個限制持續有效。
 

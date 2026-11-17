@@ -1,8 +1,15 @@
 # XK Logistic 製作文件
 
-文件日期：2026-10-15（Asia/Taipei）。狀態：規格草案，尚未經使用者確認，尚未實作。
+初版文件日期：2026-10-15；狀態更新：2026-11-17（Asia/Taipei）。新版重建方向與部分產品基準已確認；其餘子項、技術及上線決策待確認，產品尚未實作。
 
 本次任務是統整 GitHub 與本機 truck／logistic 專案，讓 2026-10-16 的雲端工作能直接延續。上傳文件不代表同意技術選型、功能範圍或開始開發。
+
+## 最新入口
+
+- [決策與剩餘子項](06-decisions-and-acceptance.md)：已確認基準優先於舊文件的概括未決說法。
+- [重建方向 ADR](adr/ADR-0001.md)、[功能差異矩陣](TRUCK_PLATFORM_TO_LOGISTICS_MATRIX.md)。
+- [舊碼靜態核對與固定版本證據](SOURCE_CODE_AUDIT_20261117.md)、[45 個來源檔案清單](SOURCE_AUDIT_MANIFEST_20261117.json)。
+- [第一個開發切片及前提](REBUILD_DELIVERY_SLICES.md)、[主要任務 Issue #4](https://github.com/xk2022/codex-xk-logistic/issues/4)。
 
 ## 閱讀順序
 
@@ -28,7 +35,7 @@
 
 ## L1–L4 接手更新
 
-本輪已依管理中心規則展開規格決策工作，請先閱讀 [執行與決策入口](LOGISTICS_EXECUTION.md)。四份細化提案補充既有 01–07 文件，不將舊 D01–D10 未決事項自動視為核准；新版程式仍排在規格與來源決策後。
+本輪已依管理中心規則展開規格決策工作，請先閱讀 [執行與決策入口](LOGISTICS_EXECUTION.md)。四份細化提案補充既有 01–07 文件；已明確確認的範圍見決策紀錄，其餘提案維持待確認。新版程式仍排在關聯規格、來源與技術決策後。
 
 - [L1 業務模型](L1_BUSINESS_MODEL.md)
 - [L2 第一版與驗收](L2_MVP_AND_ACCEPTANCE.md)
