@@ -58,6 +58,6 @@ sequence／packageQty 的工程範圍為 1～2147483647；version 為 0～900719
 
 ## 仍待處理
 
-D02 逐動作授權與帳號政策、D04 字典／聯絡／重量／櫃號／多船期／期限例外、D07 正式資料是否接續及權威 schema、D10 保存與維運仍待確認。照片、出發、資源釋放、受理動作及結案屬後續契約；不能用本模型推定已核准或實作。原 [G1～G5](LOGISTICS_EXECUTION.md) 關聯門檻保留。
+D02 逐動作授權與帳號政策、D04 字典／聯絡／重量／櫃號／多船期／期限例外、D10保存與維運仍待確認；D07本次依[ADR-0007](adr/ADR-0007.md)採M01全新啟用，不需要上述舊資料的schema／映射。照片、出發、資源釋放、受理動作及結案屬後續契約；不能用本模型推定已核准或實作。原 [G1～G5](LOGISTICS_EXECUTION.md) 關聯門檻保留。
 
 技術依據：[PostgreSQL 17 Constraints](https://www.postgresql.org/docs/17/ddl-constraints.html)、[Date/Time Types（1微秒解析度）](https://www.postgresql.org/docs/17/datatype-datetime.html)；API 對照見 [OpenAPI](api/openapi.yaml)。本次未執行 DDL／DB 交易驗證。

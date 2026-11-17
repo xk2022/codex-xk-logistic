@@ -26,7 +26,7 @@ clientRef 是同單穩定的草稿參照，1～64 字元，首字英數，其餘
 
 PUT 不做 PATCH：draft 的省略可選純量變 null，省略集合變空；shipping／siteContact 若給空物件，讀回為各欄 null 的物件，與整組 null 有別。省略的舊草稿子項移除並保留不可變版本快照；若已有執行／派工／受保護關聯則整次 409。修改 clientRef 相當於移除舊子項並建立新子項，前端應沿用讀回 ref。成功新 PUT 版本加一，重播不加。
 
-同 customerId 編輯保持歷史 customerName；草稿明確換成另一個有效客戶時，伺服器取得新名稱快照。CRM 名稱需符合本版 200 字傳輸範圍；既有資料超界屬 D07 需先處理，不能無聲截斷。精確字典尚未核定，taskKind／containerType 為非空文字，不能把示意名稱當成已核准 enum。
+同 customerId 編輯保持歷史 customerName；草稿明確換成另一個有效客戶時，伺服器取得新名稱快照。CRM 名稱需符合本版 200 字傳輸範圍；本次不匯入舊資料；新版輸入仍不可無聲截斷，未來另有匯入需求時重新核對範圍與格式。精確字典尚未核定，taskKind／containerType 為非空文字，不能把示意名稱當成已核准 enum。
 
 日期時間用RFC3339含offset、秒數00～59、小數秒最多6位（對齊timestamptz(6)）；offset小時00～23／分鐘00～59，不接受閏秒字面，超精度拒絕而非無聲捨入；date 不轉 UTC 午夜。重量／體積是非負十進位字串，最多32字元；null 未知、"0" 已知零，不用假值補齊；讀回可正規化尾零。數量／序號為正整數，上限2147483647；version 上限9007199254740991。名稱200字、地址1000字、備註4000字、電話50字是工程傳輸界線，實際業務例外仍待確認。
 
@@ -75,6 +75,6 @@ pendingPolicyIds 保留相關未決政策，例如 D04_CONTACT、D04_CONTAINER_F
 
 [契約合成資料](ORDER_DRAFT_CONTRACT_EXAMPLES.json) 明確區分 schema 正反例、圖結構正反例與未執行服務情境；不是 DB seed 或實際 HTTP 結果。[檢查紀錄](CONTRACT_CHECKS.md) 記範圍及限制。舊 [概念案例](../FIRST_SLICE_ORDER_EXAMPLES.json) 保留作欄位追溯，不當成本契約的請求／完整回應。
 
-後續需完成 D02／D04 字典與例外、D07 資料現況／來源、D10 開發與測試環境／保存政策及既有開工門檻，才進行程式、Migration、DB／HTTP／交易與授權驗收；手機／照片／部署仍按各自切片。未建立日曆事件或指定上線日。
+D07本次已採[M01全新啟用](../adr/ADR-0007.md)。後續需完成D02／D04字典與例外、D10開發與測試環境／保存政策及既有開工門檻，才進行程式、Migration、DB／HTTP／交易與授權驗收；手機／照片／部署仍按各自切片。未建立日曆事件或指定上線日。
 
 技術依據：[OpenAPI 3.1.0](https://spec.openapis.org/oas/v3.1.0)、[Cookie Authentication](https://swagger.io/docs/specification/v3_0/authentication/cookie-authentication/)、[Spring Security CSRF](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html)。

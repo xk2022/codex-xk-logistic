@@ -29,7 +29,7 @@ compose.yaml              確認後建立本機服務
 |---|---|---|
 | 前端 | 已採用 React／TypeScript／Vite | 精確版本、UI 元件／樣式及資產授權待定；Tailwind 仍為候選 |
 | 後端 | 已採用 Java 21／Spring Boot 4.1.x；Spring Security 實作 Session／CSRF | 核對並鎖定修補版及相容 BOM／工具 |
-| DB | 已採用 PostgreSQL 17 | 修補版與相依待驗證；舊 MySQL 資料是否／如何接續仍待 D07 |
+| DB | 已採用 PostgreSQL 17 | 修補版與相依待驗證；D07本次依[ADR-0007](adr/ADR-0007.md)採M01，無所詢問舊資料匯入需求 |
 | 資料存取 | 已採用 Spring Data JPA；查詢視需要用投影／明確查詢 | Entity／交易／鎖與效能依核定業務規格設計、驗收 |
 | 認證 | 已採用同源瀏覽器 Session＋CSRF | 詳細逾時、復原、各動作資料授權待 D02／D10；外部 App 是後續候選 |
 | 結構版本 | 已採用 Flyway，JPA 驗證映射 | PostgreSQL module／版本與空庫／升級驗收待完成 |

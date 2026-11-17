@@ -3,7 +3,7 @@ jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: XK Logistics First Slice Order Draft API
   version: 0.1.0
-  description: 首片工程契約；ORD-P01～P03已由使用者採用。文件與schema驗證不代表API已實作、已部署或產品驗收通過。詳細授權／帳號政策、D07資料接續、T06部署等仍待確認。
+  description: 首片工程契約；ORD-P01～P03已由使用者採用。文件與schema驗證不代表API已實作、已部署或產品驗收通過。詳細授權／帳號政策、T06部署等仍待確認。 D07本次依ADR-0007採M01，不匯入舊客戶／訂單／照片；空庫及相依仍待驗證。
 servers:
 - url: /api/v1
   description: 同源相對路徑；非已部署服務
@@ -1039,8 +1039,12 @@ x-policies-pending:
 - D02 detailed authorization
 - D04 exceptions
 - D06 photos
-- D07 data continuity
 - D09 release exceptions
 - D10 operations/recovery
 x-implementation-status: not_implemented
 x-contract-status: Engineering contract 0.1; pending policies are not approved by schema publication.
+x-data-continuity:
+  decision: ADR-0007 / M01
+  status: accepted
+  scope: No import of prior Truck customers, orders or photos in this work package.
+  legacy_database_inspected: false

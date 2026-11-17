@@ -20,7 +20,7 @@
 | 車輛狀態 | G1 文件 BUSY 與 IN_USE 混用 | 統一 AVAILABLE／IN_USE／MAINTENANCE／RETIRED |
 | 貨櫃狀態 | L8 有 UNASSIGNED、DONE；CRM 又有 arrived／returned 等 | 區分任務進度與貨櫃物流事件，不直接互轉 |
 | 認證 | G1 JWT；G2 Session＋CSRF | 已採用 Session＋CSRF；詳細授權、逾時及復原政策仍待定稿 |
-| 資料庫 | G1 MySQL／JPA；G2 PostgreSQL／Flyway／JDBC | 已採用 PostgreSQL 17、Flyway 及 JPA，分別記錄 ADR；舊資料接續仍待確認 |
+| 資料庫 | G1 MySQL／JPA；G2 PostgreSQL／Flyway／JDBC | 已採用 PostgreSQL 17、Flyway 及 JPA，分別記錄 ADR；本次已依[ADR-0007](adr/ADR-0007.md)採M01，不匯入所詢問舊資料；空庫與相依待驗證 |
 | UI | L8 Bootstrap／Metronic；G2 Tailwind 與自有元件 | 參考資訊架構與操作，不混用整套樣式或假定模板可再散布 |
 | 擴充模組 | L8 港口時段、合約計費、薪資等型別 | 保存候選需求，不能自動加入第一版 |
 
