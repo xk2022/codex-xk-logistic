@@ -19,6 +19,10 @@ compose.yaml              確認後建立本機服務
 
 以上為目標，不代表這些程式檔已存在。後端採模組化單體，HTTP／應用用例／領域規則／資料存取分層。避免單純為 CRUD 複製大量 Port／Adapter；跨領域交易與外部儲存才明確建立介面。
 
+## 最新技術提案
+
+2026-11-17 已補 [分項技術選型／官方支援查核及資料接續提案](TECHNOLOGY_AND_DATA_PROPOSAL.md)。其中建議 Boot 4.1.x、PostgreSQL 17、JPA、Session／CSRF 與 Flyway，各自仍為 Proposed；以下原候選及 API 草案保留，未建立程式、正式 OpenAPI 或核准安全政策。
+
 ## 選型候選
 
 | 項目 | 建議 | 尚待決定 |
