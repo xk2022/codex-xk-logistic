@@ -13,7 +13,7 @@ backend/                  Java 21 + Spring Boot
   src/main/.../fms/
   src/main/resources/db/migration/
 docs/                     規格、決策、驗收
-  api/openapi.yaml        確認規格後才建立
+  api/openapi.yaml        首片草稿工程契約已建立，尚未實作
 compose.yaml              確認後建立本機服務
 ```
 
@@ -21,7 +21,7 @@ compose.yaml              確認後建立本機服務
 
 ## 最新技術提案
 
-2026-11-17 使用者回覆「是！採用」，已確認 [Java 21／Boot 4.1.x、React／TypeScript／Vite、PostgreSQL 17、JPA、Session／CSRF 與 Flyway](TECHNOLOGY_AND_DATA_PROPOSAL.md)，ADR-0002～0006 為 Accepted。以下保留已採用基準與剩餘細節，精確版本、詳細授權／復原及環境待定；本輪未建立程式或正式 OpenAPI。
+2026-11-17 使用者回覆「是！採用」，已確認 [Java 21／Boot 4.1.x、React／TypeScript／Vite、PostgreSQL 17、JPA、Session／CSRF 與 Flyway](TECHNOLOGY_AND_DATA_PROPOSAL.md)，ADR-0002～0006 為 Accepted。以下保留已採用基準與剩餘細節，精確版本、詳細授權／復原及環境待定；本輪已建立首片OpenAPI工程契約，未建立產品程式。
 
 ## 已採用技術與剩餘選項
 
@@ -38,12 +38,14 @@ compose.yaml              確認後建立本機服務
 
 「前後端分離」為程式、契約、建置與測試分離；不要求不同網域或微服務。沿 G2 的同源代理可簡化 Cookie 與 CSRF。Session Cookie 採 Secure／HttpOnly／SameSite，寫入檢查 CSRF 與來源；登出與停權能撤銷存取。前端不在 localStorage 保存長效登入 token。Session＋CSRF 技術選擇已確認；具體 Cookie／逾時、停權及授權細節依 D02／D10 定稿並驗收。
 
-## API 共通規範候選
+## 首片工程契約與其他API候選
+
+ORD-P01～P03已採用，[首片OpenAPI](api/openapi.yaml)、[操作與重送說明](api/README.md)及[資料模型](FIRST_SLICE_DATA_MODEL.md)為本片契約；其餘端點仍為候選。D02逐操作授權等未決前不得據schema暴露服務。以下共通表示對齊AGENTS，本片之外的範圍與政策沒有因此採用。
 
 - `/api/v1`，JSON；UUID 字串，列舉代碼大寫。
 - 分頁 page=0 起，size 預設 20、上限 100；排序欄白名單；過濾與授權在資料庫查詢層完成。
-- 列表回 data、page、size、totalElements；錯誤回 code、message、fieldErrors、requestId，確認後寫入 OpenAPI。
-- 400 格式／驗證、401 未登入、403 無權限、404 不存在或範圍遮罩、409 版本／占用／狀態衝突、429 限流。
+- 統一code／message／data／traceId；分頁data內為content／page／size／totalElements／totalPages，錯誤另帶fieldErrors；本片不採舊requestId名稱。
+- 本片400格式／驗證、401未登入、403權限／CSRF、404範圍查無、409版本／前態／重送衝突、500未預期錯誤；限流政策與其他錯誤仍按後續契約。
 - 動作使用明確端點；不能讓前端任意 PATCH status 跳過業務規則。
 - availableActions 可由後端回傳供 UI 顯示，執行時後端仍重新驗證。
 
@@ -56,8 +58,8 @@ compose.yaml              確認後建立本機服務
 | UPMS | /users、/roles、/permissions 列表／明細／管理；使用者角色與角色權限指派 |
 | ADM | /dictionary-categories、分類項目、排序與 /system-parameters |
 | CRM | /customers 列表／建立／明細／編輯／啟停；聯絡人依範圍確認 |
-| 訂單 | GET／POST /orders；GET／PATCH /orders/{id}；POST /orders/{id}/accept、/cancel、/close；GET /orders/{id}/history |
-| 貨櫃 | /orders/{id}/containers；編輯、查詢規則待 D03／D04 |
+| 訂單首片 | GET／POST /orders；GET／PUT /orders/{orderId}；GET /orders/{orderId}/acceptance-check，詳見正式schema。受理／取消／結案／歷史動作另排，尚未實作。 |
+| 貨櫃／貨物項目 | 首片內含於訂單聚合完整保存與明細；獨立containers端點仍屬候選，不與本片形成第二套寫入來源。 |
 | 運輸任務 | /transport-tasks 列表／建立／明細；關聯訂單或貨櫃，待 D03 |
 | 車隊 | /vehicles、/drivers 列表／建立／明細／編輯；狀態動作另定 |
 | 派工 | POST /dispatches；GET /dispatches、/{id}；POST /dispatches/{id}/start、/sign、/complete、/cancel；改派待 D05 |

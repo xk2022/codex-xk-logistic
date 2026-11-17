@@ -1,0 +1,1046 @@
+openapi: 3.1.0
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+info:
+  title: XK Logistics First Slice Order Draft API
+  version: 0.1.0
+  description: 首片工程契約；ORD-P01～P03已由使用者採用。文件與schema驗證不代表API已實作、已部署或產品驗收通過。詳細授權／帳號政策、D07資料接續、T06部署等仍待確認。
+servers:
+- url: /api/v1
+  description: 同源相對路徑；非已部署服務
+tags:
+- name: OrderDraft
+  description: 待受理草稿保存／查詢與只讀完整性檢核
+security:
+- sessionAuth: []
+paths:
+  /orders:
+    post:
+      operationId: createOrderDraft
+      tags:
+      - OrderDraft
+      summary: 建立待受理草稿
+      description: 採ORD-P01；只需type與有效customerId。UUID／單號／客戶快照／稽核由後端產生；items及tasks可空。建立不受理、不派工或占用人車。
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '201':
+          description: 成功；資料由後端保存或依已授權範圍查詢。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderEnvelope'
+          headers:
+            Location:
+              description: 新訂單明細相對路徑 /api/v1/orders/{orderId}
+              schema:
+                type: string
+            Idempotency-Replayed:
+              description: true表示重播已完成的同一業務結果；traceId仍屬本次請求。
+              schema:
+                type: boolean
+        '400':
+          $ref: '#/components/responses/InvalidDraft'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/Unexpected'
+      x-implementation-status: not_implemented
+      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
+        alone is insufficient.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDraftRequest'
+    get:
+      operationId: listOrderDrafts
+      tags:
+      - OrderDraft
+      summary: 查詢訂單列表
+      description: 先限制授權範圍再篩選／分頁及計算總數；排序再以id作固定次序。同公司角色的精確可見範圍仍依D02。
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+          - updatedAt,desc
+          - updatedAt,asc
+          - orderNo,asc
+          - orderNo,desc
+          default: updatedAt,desc
+      - name: type
+        in: query
+        schema:
+          $ref: '#/components/schemas/OrderType'
+      - name: customerId
+        in: query
+        schema:
+          $ref: '#/components/schemas/Uuid'
+      responses:
+        '200':
+          description: 成功；資料由後端保存或依已授權範圍查詢。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderPageEnvelope'
+        '400':
+          $ref: '#/components/responses/InvalidDraft'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/Unexpected'
+      x-implementation-status: not_implemented
+      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
+        alone is insufficient.
+  /orders/{orderId}:
+    get:
+      operationId: getOrderDraft
+      tags:
+      - OrderDraft
+      summary: 取得訂單及項目／任務明細
+      description: 回傳伺服器ID及穩定clientRef；nullable欄位回明確null，集合回陣列。
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      responses:
+        '200':
+          description: 成功；資料由後端保存或依已授權範圍查詢。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderEnvelope'
+        '400':
+          $ref: '#/components/responses/InvalidDraft'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Unexpected'
+      x-implementation-status: not_implemented
+      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
+        alone is insufficient.
+    put:
+      operationId: replaceOrderDraft
+      tags:
+      - OrderDraft
+      summary: 保存草稿的完整新版本
+      description: 只允許OPEN＋DRAFT且無執行／派工資料的訂單。expectedVersion比對整個聚合。draft為完整替換；省略可選值等同null、集合省略等同空集合。既有clientRef保持UUID；新ref產生UUID；移除草稿子項只影響本次未執行草稿，保留版本歷程。前置參照須存在、同單且無環。
+        同customerId保持客戶名稱歷史快照，明確換有效客戶才取得新快照。移除／新增只涉及未執行草稿，其他關聯限制回409。
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      - $ref: '#/components/parameters/CsrfToken'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: 成功；資料由後端保存或依已授權範圍查詢。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderEnvelope'
+          headers:
+            Idempotency-Replayed:
+              description: true表示重播已完成的同一業務結果；traceId仍屬本次請求。
+              schema:
+                type: boolean
+        '400':
+          $ref: '#/components/responses/InvalidDraft'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/Unexpected'
+      x-implementation-status: not_implemented
+      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
+        alone is insufficient.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceDraftRequest'
+  /orders/{orderId}/acceptance-check:
+    get:
+      operationId: checkOrderAcceptanceFields
+      tags:
+      - OrderDraft
+      summary: 檢核已採用的受理欄位規則
+      description: 只讀ORD-P01～P03。回報已確認規則的完整性、缺漏與尚未定稿的相關政策；COMPLETE不等於可以操作受理或派工。此端點不改狀態。
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      responses:
+        '200':
+          description: 成功；資料由後端保存或依已授權範圍查詢。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptanceCheckEnvelope'
+        '400':
+          $ref: '#/components/responses/InvalidDraft'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Unexpected'
+      x-implementation-status: not_implemented
+      x-authorization-policy: D02 operation/data-scope mapping must be resolved before exposing the operation; authenticated
+        alone is insufficient.
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
+      description: 已採用Session認證的工程契約名稱；不表示任何角色或所有已登入者自動獲授權。
+  parameters:
+    OrderId:
+      name: orderId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    CsrfToken:
+      name: X-CSRF-TOKEN
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 4096
+        pattern: \S
+      description: 由登入流程取得的CSRF token；登入／登出後須更新。本檔不定義登入端點、逾時或復原政策。
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        pattern: ^[A-Za-z0-9._:-]+$
+        not:
+          pattern: '[^A-Za-z0-9._:-]'
+      description: 範圍為已驗證公司／操作者＋HTTP方法＋資源路徑。同key同正規化body重播原業務結果；不同body或處理中回409。
+  responses:
+    InvalidDraft:
+      description: 400 請求格式、未知欄位或已提供值不合法；含欄位定位。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: 401 未登入或Session失效。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: 403 無操作權限；已登入但CSRF缺少／錯誤亦拒絕寫入。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: 404 在已授權的資料範圍查無訂單。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Conflict:
+      description: 409 舊版本、不可編輯前態、有效關聯限制或idempotency key衝突。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unexpected:
+      description: 500 未預期失敗；不回傳內部例外或敏感資訊，交易回滾。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+  schemas:
+    Uuid:
+      type: string
+      format: uuid
+    RefKey:
+      type: string
+      minLength: 1
+      maxLength: 64
+      pattern: ^[A-Za-z0-9][A-Za-z0-9_-]*$
+      description: 同一訂單內穩定的輸入參照；非UUID、非對外單號，不能跨單定位資料。項目與任務分別唯一；修改ref相當移除舊子項並建立新子項。
+      not:
+        pattern: '[^A-Za-z0-9_-]'
+    NonBlankText:
+      type: string
+      minLength: 1
+      maxLength: 200
+      pattern: \S
+    AddressText:
+      type: string
+      minLength: 1
+      maxLength: 1000
+      pattern: \S
+    NullableText:
+      anyOf:
+      - $ref: '#/components/schemas/NonBlankText'
+      - type: 'null'
+    NullableAddress:
+      anyOf:
+      - $ref: '#/components/schemas/AddressText'
+      - type: 'null'
+    NullableDate:
+      anyOf:
+      - type: string
+        format: date
+      - type: 'null'
+    NullableDateTime:
+      anyOf:
+      - type: string
+        format: date-time
+        pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt]([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{1,6})?([Zz]|[+-]([01][0-9]|2[0-3]):[0-5][0-9])$
+        description: 含offset的RFC3339日期時間；本片秒數00～59、小數秒最多6位，offset小時00～23／分鐘00～59，不接受閏秒字面。日曆有效性由後端驗證，保存瞬間而非原offset字面。
+      - type: 'null'
+    NullableDecimal:
+      anyOf:
+      - type: string
+        maxLength: 32
+        pattern: ^(0|[1-9][0-9]*)(\.[0-9]+)?$
+        description: 非負十進位字串，單位由欄位定義；null表示未知，0表示明確已知為零，不能自動以0代未知。
+        not:
+          pattern: '[^0-9.]'
+      - type: 'null'
+    NullablePositiveInteger:
+      anyOf:
+      - type: integer
+        minimum: 1
+        maximum: 2147483647
+      - type: 'null'
+    OrderType:
+      type: string
+      enum:
+      - IMPORT
+      - EXPORT
+      - LOCAL
+    ShippingFields:
+      type: object
+      additionalProperties: false
+      properties:
+        shippingCompany:
+          $ref: '#/components/schemas/NullableText'
+        vesselVoyage:
+          $ref: '#/components/schemas/NullableText'
+        pol:
+          $ref: '#/components/schemas/NullableText'
+        pod:
+          $ref: '#/components/schemas/NullableText'
+        eta:
+          $ref: '#/components/schemas/NullableDateTime'
+        etd:
+          $ref: '#/components/schemas/NullableDateTime'
+        blNo:
+          $ref: '#/components/schemas/NullableText'
+      required: []
+    ShippingRead:
+      type: object
+      additionalProperties: false
+      properties:
+        shippingCompany:
+          $ref: '#/components/schemas/NullableText'
+        vesselVoyage:
+          $ref: '#/components/schemas/NullableText'
+        pol:
+          $ref: '#/components/schemas/NullableText'
+        pod:
+          $ref: '#/components/schemas/NullableText'
+        eta:
+          $ref: '#/components/schemas/NullableDateTime'
+        etd:
+          $ref: '#/components/schemas/NullableDateTime'
+        blNo:
+          $ref: '#/components/schemas/NullableText'
+      required:
+      - shippingCompany
+      - vesselVoyage
+      - pol
+      - pod
+      - eta
+      - etd
+      - blNo
+    ContactFields:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          $ref: '#/components/schemas/NullableText'
+        phone:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 50
+            pattern: \S
+          - type: 'null'
+      required: []
+    ContactRead:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          $ref: '#/components/schemas/NullableText'
+        phone:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 50
+            pattern: \S
+          - type: 'null'
+      required:
+      - name
+      - phone
+    ItemDraftInput:
+      type: object
+      additionalProperties: false
+      properties:
+        clientRef:
+          $ref: '#/components/schemas/RefKey'
+        sequence:
+          $ref: '#/components/schemas/NullablePositiveInteger'
+        itemKind:
+          type:
+          - string
+          - 'null'
+          enum:
+          - CONTAINER
+          - CARGO
+          - null
+        containerType:
+          $ref: '#/components/schemas/NullableText'
+        containerNo:
+          $ref: '#/components/schemas/NullableText'
+        packageQty:
+          $ref: '#/components/schemas/NullablePositiveInteger'
+        grossWeight:
+          $ref: '#/components/schemas/NullableDecimal'
+        cbm:
+          $ref: '#/components/schemas/NullableDecimal'
+        lastPickupDate:
+          $ref: '#/components/schemas/NullableDate'
+        deliveryCutoffAt:
+          $ref: '#/components/schemas/NullableDateTime'
+      required:
+      - clientRef
+    TaskDraftInput:
+      type: object
+      additionalProperties: false
+      properties:
+        clientRef:
+          $ref: '#/components/schemas/RefKey'
+        itemRef:
+          $ref: '#/components/schemas/RefKey'
+        taskKind:
+          $ref: '#/components/schemas/NullableText'
+        pickupName:
+          $ref: '#/components/schemas/NullableText'
+        pickupAddress:
+          $ref: '#/components/schemas/NullableAddress'
+        deliveryName:
+          $ref: '#/components/schemas/NullableText'
+        deliveryAddress:
+          $ref: '#/components/schemas/NullableAddress'
+        siteContact:
+          anyOf:
+          - $ref: '#/components/schemas/ContactFields'
+          - type: 'null'
+        plannedStartAt:
+          $ref: '#/components/schemas/NullableDateTime'
+        plannedEndAt:
+          $ref: '#/components/schemas/NullableDateTime'
+        predecessorRefs:
+          type: array
+          items:
+            $ref: '#/components/schemas/RefKey'
+          uniqueItems: true
+          default: []
+        requiredTask:
+          type:
+          - boolean
+          - 'null'
+          enum:
+          - true
+          - null
+          description: 首片允許明確標為必要或保留未知；不開放false／免除必要義務，相關例外待決。
+          default: null
+      required:
+      - clientRef
+      - itemRef
+    DraftData:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          $ref: '#/components/schemas/OrderType'
+        customerId:
+          $ref: '#/components/schemas/Uuid'
+        customerReference:
+          $ref: '#/components/schemas/NullableText'
+        remark:
+          anyOf:
+          - type: string
+            maxLength: 4000
+            description: 可空字串；其他未知文字欄位請傳null，不用純空白代未知。
+          - type: 'null'
+        shipping:
+          anyOf:
+          - $ref: '#/components/schemas/ShippingFields'
+          - type: 'null'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDraftInput'
+          default: []
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskDraftInput'
+          default: []
+      required:
+      - type
+      - customerId
+    CreateDraftRequest:
+      $ref: '#/components/schemas/DraftData'
+    ReplaceDraftRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        expectedVersion:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        draft:
+          $ref: '#/components/schemas/DraftData'
+      required:
+      - expectedVersion
+      - draft
+    ItemDraftRead:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+          readOnly: true
+        clientRef:
+          $ref: '#/components/schemas/RefKey'
+        sequence:
+          $ref: '#/components/schemas/NullablePositiveInteger'
+        itemKind:
+          type:
+          - string
+          - 'null'
+          enum:
+          - CONTAINER
+          - CARGO
+          - null
+        containerType:
+          $ref: '#/components/schemas/NullableText'
+        containerNo:
+          $ref: '#/components/schemas/NullableText'
+        packageQty:
+          $ref: '#/components/schemas/NullablePositiveInteger'
+        grossWeight:
+          $ref: '#/components/schemas/NullableDecimal'
+        cbm:
+          $ref: '#/components/schemas/NullableDecimal'
+        lastPickupDate:
+          $ref: '#/components/schemas/NullableDate'
+        deliveryCutoffAt:
+          $ref: '#/components/schemas/NullableDateTime'
+      required:
+      - id
+      - clientRef
+      - sequence
+      - itemKind
+      - containerType
+      - containerNo
+      - packageQty
+      - grossWeight
+      - cbm
+      - lastPickupDate
+      - deliveryCutoffAt
+    TaskDraftRead:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+          readOnly: true
+        taskNo:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: \S
+          readOnly: true
+        orderId:
+          $ref: '#/components/schemas/Uuid'
+          readOnly: true
+        itemId:
+          $ref: '#/components/schemas/Uuid'
+          readOnly: true
+        clientRef:
+          $ref: '#/components/schemas/RefKey'
+        itemRef:
+          $ref: '#/components/schemas/RefKey'
+        taskKind:
+          $ref: '#/components/schemas/NullableText'
+        pickupName:
+          $ref: '#/components/schemas/NullableText'
+        pickupAddress:
+          $ref: '#/components/schemas/NullableAddress'
+        deliveryName:
+          $ref: '#/components/schemas/NullableText'
+        deliveryAddress:
+          $ref: '#/components/schemas/NullableAddress'
+        siteContact:
+          anyOf:
+          - $ref: '#/components/schemas/ContactRead'
+          - type: 'null'
+        plannedStartAt:
+          $ref: '#/components/schemas/NullableDateTime'
+        plannedEndAt:
+          $ref: '#/components/schemas/NullableDateTime'
+        predecessorRefs:
+          type: array
+          items:
+            $ref: '#/components/schemas/RefKey'
+          uniqueItems: true
+          default: []
+        requiredTask:
+          type:
+          - boolean
+          - 'null'
+          enum:
+          - true
+          - null
+          description: 首片允許明確標為必要或保留未知；不開放false／免除必要義務，相關例外待決。
+          default: null
+        predecessorTaskIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/Uuid'
+          uniqueItems: true
+      required:
+      - id
+      - taskNo
+      - orderId
+      - itemId
+      - clientRef
+      - itemRef
+      - taskKind
+      - pickupName
+      - pickupAddress
+      - deliveryName
+      - deliveryAddress
+      - siteContact
+      - plannedStartAt
+      - plannedEndAt
+      - predecessorRefs
+      - requiredTask
+      - predecessorTaskIds
+    OrderSummary:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        orderNo:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: \S
+        type:
+          $ref: '#/components/schemas/OrderType'
+        customerId:
+          $ref: '#/components/schemas/Uuid'
+        customerName:
+          $ref: '#/components/schemas/NonBlankText'
+        lifecycleStatus:
+          type: string
+          enum:
+          - OPEN
+          - CANCELLED
+          - CLOSED
+        acceptanceStatus:
+          type: string
+          enum:
+          - DRAFT
+          - ACCEPTED
+        version:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        createdAt:
+          type: string
+          format: date-time
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt]([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{1,6})?([Zz]|[+-]([01][0-9]|2[0-3]):[0-5][0-9])$
+          description: 含offset的RFC3339日期時間；本片秒數00～59、小數秒最多6位，offset小時00～23／分鐘00～59，不接受閏秒字面。日曆有效性由後端驗證，保存瞬間而非原offset字面。
+        updatedAt:
+          type: string
+          format: date-time
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt]([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{1,6})?([Zz]|[+-]([01][0-9]|2[0-3]):[0-5][0-9])$
+          description: 含offset的RFC3339日期時間；本片秒數00～59、小數秒最多6位，offset小時00～23／分鐘00～59，不接受閏秒字面。日曆有效性由後端驗證，保存瞬間而非原offset字面。
+      required:
+      - id
+      - orderNo
+      - type
+      - customerId
+      - customerName
+      - lifecycleStatus
+      - acceptanceStatus
+      - version
+      - createdAt
+      - updatedAt
+    OrderDraftRead:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        orderNo:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: \S
+        type:
+          $ref: '#/components/schemas/OrderType'
+        customerId:
+          $ref: '#/components/schemas/Uuid'
+        customerName:
+          $ref: '#/components/schemas/NonBlankText'
+        lifecycleStatus:
+          type: string
+          enum:
+          - OPEN
+          - CANCELLED
+          - CLOSED
+        acceptanceStatus:
+          type: string
+          enum:
+          - DRAFT
+          - ACCEPTED
+        version:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        createdAt:
+          type: string
+          format: date-time
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt]([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{1,6})?([Zz]|[+-]([01][0-9]|2[0-3]):[0-5][0-9])$
+          description: 含offset的RFC3339日期時間；本片秒數00～59、小數秒最多6位，offset小時00～23／分鐘00～59，不接受閏秒字面。日曆有效性由後端驗證，保存瞬間而非原offset字面。
+        updatedAt:
+          type: string
+          format: date-time
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt]([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{1,6})?([Zz]|[+-]([01][0-9]|2[0-3]):[0-5][0-9])$
+          description: 含offset的RFC3339日期時間；本片秒數00～59、小數秒最多6位，offset小時00～23／分鐘00～59，不接受閏秒字面。日曆有效性由後端驗證，保存瞬間而非原offset字面。
+        customerReference:
+          $ref: '#/components/schemas/NullableText'
+        remark:
+          anyOf:
+          - type: string
+            maxLength: 4000
+          - type: 'null'
+        shipping:
+          anyOf:
+          - $ref: '#/components/schemas/ShippingRead'
+          - type: 'null'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDraftRead'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskDraftRead'
+        createdBy:
+          $ref: '#/components/schemas/Uuid'
+        updatedBy:
+          $ref: '#/components/schemas/Uuid'
+      required:
+      - id
+      - orderNo
+      - type
+      - customerId
+      - customerName
+      - lifecycleStatus
+      - acceptanceStatus
+      - version
+      - createdAt
+      - updatedAt
+      - customerReference
+      - remark
+      - shipping
+      - items
+      - tasks
+      - createdBy
+      - updatedBy
+    FieldIssue:
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          type: string
+        fieldId:
+          type: string
+        ruleId:
+          type: string
+        message:
+          type: string
+      required:
+      - path
+      - fieldId
+      - ruleId
+      - message
+    AcceptanceCheck:
+      type: object
+      additionalProperties: false
+      properties:
+        orderId:
+          $ref: '#/components/schemas/Uuid'
+        version:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        checkedRules:
+          type: array
+          items:
+            type: string
+            enum:
+            - ORD-P01
+            - ORD-P02
+            - ORD-P03
+          uniqueItems: true
+          minItems: 3
+          maxItems: 3
+        confirmedRulesOutcome:
+          type: string
+          enum:
+          - COMPLETE
+          - INCOMPLETE
+        missingFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldIssue'
+        pendingPolicyIds:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        operationalAcceptance:
+          type: string
+          const: NOT_GRANTED
+          description: 只讀檢核不授予受理／派工或業務操作權限，不改訂單狀態。
+      required:
+      - orderId
+      - version
+      - checkedRules
+      - confirmedRulesOutcome
+      - missingFields
+      - pendingPolicyIds
+      - operationalAcceptance
+      allOf:
+      - if:
+          properties:
+            confirmedRulesOutcome:
+              const: COMPLETE
+        then:
+          properties:
+            missingFields:
+              maxItems: 0
+        else:
+          properties:
+            missingFields:
+              minItems: 1
+    OrderPage:
+      type: object
+      additionalProperties: false
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSummary'
+        page:
+          type: integer
+          minimum: 0
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        totalElements:
+          type: integer
+          minimum: 0
+        totalPages:
+          type: integer
+          minimum: 0
+      required:
+      - content
+      - page
+      - size
+      - totalElements
+      - totalPages
+    OrderEnvelope:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          const: OK
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/OrderDraftRead'
+        traceId:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+      required:
+      - code
+      - message
+      - data
+      - traceId
+    OrderPageEnvelope:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          const: OK
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/OrderPage'
+        traceId:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+      required:
+      - code
+      - message
+      - data
+      - traceId
+    AcceptanceCheckEnvelope:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          const: OK
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/AcceptanceCheck'
+        traceId:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+      required:
+      - code
+      - message
+      - data
+      - traceId
+    ErrorEnvelope:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: \S
+          enum:
+          - VALIDATION_ERROR
+          - INVALID_CUSTOMER
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - CSRF_INVALID
+          - ORDER_NOT_FOUND
+          - VERSION_CONFLICT
+          - ORDER_NOT_EDITABLE
+          - PROTECTED_RELATION
+          - IDEMPOTENCY_KEY_REUSED
+          - IDEMPOTENCY_IN_PROGRESS
+          - INTERNAL_ERROR
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          pattern: \S
+        data:
+          anyOf:
+          - type: object
+            additionalProperties: false
+            properties:
+              actualVersion:
+                type: integer
+                minimum: 0
+                maximum: 9007199254740991
+            required: []
+          - type: 'null'
+        traceId:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        fieldErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldIssue'
+      required:
+      - code
+      - message
+      - data
+      - traceId
+      - fieldErrors
+x-business-decisions-accepted:
+- ORD-P01
+- ORD-P02
+- ORD-P03
+x-policies-pending:
+- D02 detailed authorization
+- D04 exceptions
+- D06 photos
+- D07 data continuity
+- D09 release exceptions
+- D10 operations/recovery
+x-implementation-status: not_implemented
+x-contract-status: Engineering contract 0.1; pending policies are not approved by schema publication.
