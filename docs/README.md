@@ -6,6 +6,8 @@
 
 ## 最新入口
 
+- [首片訂單欄位與驗收提案](FIRST_SLICE_ORDER_SPEC.md)：40 筆欄位定義、分階段必填建議、三類合成案例及 16 項待執行驗收；P01～P03 尚待確認。
+
 - [已採用技術與資料接續提案](TECHNOLOGY_AND_DATA_PROPOSAL.md)：六項技術方案已採用，五份 ADR 轉為 Accepted；精確版本／整合待驗證，資料接續現況維持待確認。
 
 - [決策與剩餘子項](06-decisions-and-acceptance.md)：已確認基準優先於舊文件的概括未決說法。
