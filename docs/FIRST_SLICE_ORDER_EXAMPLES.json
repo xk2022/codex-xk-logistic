@@ -1,9 +1,9 @@
 {
-  "status": "PROPOSED",
+  "status": "ILLUSTRATIVE",
   "synthetic": true,
   "representation": "post-save read-model illustration; not an API request, DB seed or execution result",
   "runtime_validation": "not_run",
-  "note": "示意 UUID、單號、字典值與時間不是正式編碼／API 契約；尚無真實業務案例或日曆排程。櫃號、聯絡方式及場站截止資料未知，案例只供草稿／重讀評審，不證明可受理、派工或出發。",
+  "note": "示意 UUID、單號、字典值與時間不是正式編碼／API 契約；尚無真實業務案例或日曆排程。櫃號、聯絡方式及場站截止資料未知，案例只供草稿／重讀評審，不證明可受理、派工或出發。 2026-11-17三項建單決策已採用；本檔保留概念片段，非正式API請求／完整回應，非現場或執行證據。契約案例另見docs/api/ORDER_DRAFT_CONTRACT_EXAMPLES.json。",
   "referenceCustomers": [
     {
       "id": "00000000-0000-4000-8000-000000000101",
@@ -24,7 +24,7 @@
   "cases": [
     {
       "id": "DEMO-IMPORT",
-      "business_phase": "待受理草稿（提案）",
+      "business_phase": "待受理草稿（合成概念示意）",
       "order": {
         "id": "00000000-0000-4000-8000-000000000001",
         "orderNo": "DEMO-I-001",
@@ -142,7 +142,7 @@
     },
     {
       "id": "DEMO-EXPORT",
-      "business_phase": "待受理草稿（提案）",
+      "business_phase": "待受理草稿（合成概念示意）",
       "order": {
         "id": "00000000-0000-4000-8000-000000000002",
         "orderNo": "DEMO-E-001",
@@ -214,7 +214,7 @@
     },
     {
       "id": "DEMO-LOCAL",
-      "business_phase": "待受理草稿（提案）",
+      "business_phase": "待受理草稿（合成概念示意）",
       "order": {
         "id": "00000000-0000-4000-8000-000000000003",
         "orderNo": "DEMO-L-001",
@@ -278,7 +278,7 @@
     }
   ],
   "minimalDraft": {
-    "business_phase": "待受理草稿（P01 提案）",
+    "business_phase": "待受理草稿（P01已採用；合成示意）",
     "order": {
       "id": "00000000-0000-4000-8000-000000000004",
       "orderNo": "DEMO-DRAFT-001",
@@ -291,5 +291,10 @@
       "items": [],
       "tasks": []
     }
-  }
+  },
+  "acceptedRules": [
+    "ORD-P01",
+    "ORD-P02",
+    "ORD-P03"
+  ]
 }

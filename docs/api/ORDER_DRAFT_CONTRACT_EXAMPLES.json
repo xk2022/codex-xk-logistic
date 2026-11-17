@@ -1,0 +1,2638 @@
+{
+  "metadata": {
+    "version": "0.1.0",
+    "synthetic": true,
+    "runtime_validation": "not_run",
+    "purpose": "Schema與輸入圖靜態驗證；並非服務、DB、授權或實際HTTP結果。日期／客戶／地址／deadline均合成；補齊僅為已採用P規則的評審。",
+    "acceptedRules": [
+      "ORD-P01",
+      "ORD-P02",
+      "ORD-P03"
+    ],
+    "source": "../FIRST_SLICE_ORDER_EXAMPLES.json; fixed baseline afc032b49ce8ea579abdcd1d04dd3c37833f6d08",
+    "syntheticCustomers": [
+      {
+        "id": "00000000-0000-4000-8000-000000000101",
+        "name": "示意客戶甲",
+        "enabled": true
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000102",
+        "name": "示意客戶乙",
+        "enabled": true
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000103",
+        "name": "示意客戶丙",
+        "enabled": true
+      }
+    ]
+  },
+  "schemaPositive": [
+    {
+      "id": "minimal-create",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "IMPORT",
+        "customerId": "00000000-0000-4000-8000-000000000101"
+      }
+    },
+    {
+      "id": "DEMO-IMPORT-CONTRACT-create",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "IMPORT",
+        "customerId": "00000000-0000-4000-8000-000000000101",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": {
+          "shippingCompany": "示意船公司",
+          "vesselVoyage": "DEMO-VOYAGE-I",
+          "pol": "示意裝貨港",
+          "pod": "示意卸貨港",
+          "eta": "2026-12-01T08:00:00+08:00",
+          "etd": null,
+          "blNo": "DEMO-BL-I"
+        },
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CONTAINER",
+            "containerType": "20GP",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "12000.00",
+            "cbm": null,
+            "lastPickupDate": "2026-12-04",
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          },
+          {
+            "sequence": 2,
+            "itemKind": "CONTAINER",
+            "containerType": "40HQ",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "18000.00",
+            "cbm": null,
+            "lastPickupDate": "2026-12-04",
+            "deliveryCutoffAt": null,
+            "clientRef": "item-2"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "提重櫃",
+            "pickupName": "示意港區A",
+            "pickupAddress": "合成地點-港區A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T11:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "還空櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意櫃場A",
+            "deliveryAddress": "合成地點-櫃場A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-02T09:00:00+08:00",
+            "plannedEndAt": "2026-12-02T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          },
+          {
+            "taskKind": "提重櫃",
+            "pickupName": "示意港區A",
+            "pickupAddress": "合成地點-港區A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T11:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-3",
+            "itemRef": "item-2",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "還空櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意櫃場A",
+            "deliveryAddress": "合成地點-櫃場A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-02T09:00:00+08:00",
+            "plannedEndAt": "2026-12-02T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-4",
+            "itemRef": "item-2",
+            "predecessorRefs": [
+              "task-3"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEMO-IMPORT-CONTRACT-response",
+      "schema": "OrderEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "草稿已保存（合成示例）",
+        "data": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "orderNo": "DEMO-I-001",
+          "type": "IMPORT",
+          "customerId": "00000000-0000-4000-8000-000000000101",
+          "customerName": "示意客戶甲",
+          "customerReference": null,
+          "remark": "合成案例，不代表真實委託",
+          "shipping": {
+            "shippingCompany": "示意船公司",
+            "vesselVoyage": "DEMO-VOYAGE-I",
+            "pol": "示意裝貨港",
+            "pod": "示意卸貨港",
+            "eta": "2026-12-01T08:00:00+08:00",
+            "etd": null,
+            "blNo": "DEMO-BL-I"
+          },
+          "items": [
+            {
+              "id": "00000000-0000-4000-8000-000000000011",
+              "sequence": 1,
+              "itemKind": "CONTAINER",
+              "containerType": "20GP",
+              "containerNo": null,
+              "packageQty": null,
+              "grossWeight": "12000.00",
+              "cbm": null,
+              "lastPickupDate": "2026-12-04",
+              "deliveryCutoffAt": null,
+              "clientRef": "item-1"
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000012",
+              "sequence": 2,
+              "itemKind": "CONTAINER",
+              "containerType": "40HQ",
+              "containerNo": null,
+              "packageQty": null,
+              "grossWeight": "18000.00",
+              "cbm": null,
+              "lastPickupDate": "2026-12-04",
+              "deliveryCutoffAt": null,
+              "clientRef": "item-2"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "00000000-0000-4000-8000-000000000021",
+              "taskNo": "DEMO-T-21",
+              "orderId": "00000000-0000-4000-8000-000000000001",
+              "itemId": "00000000-0000-4000-8000-000000000011",
+              "taskKind": "提重櫃",
+              "pickupName": "示意港區A",
+              "pickupAddress": "合成地點-港區A",
+              "deliveryName": "示意倉庫A",
+              "deliveryAddress": "合成地點-倉庫A",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T09:00:00+08:00",
+              "plannedEndAt": "2026-12-01T11:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-1",
+              "itemRef": "item-1",
+              "predecessorRefs": [],
+              "predecessorTaskIds": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000022",
+              "taskNo": "DEMO-T-22",
+              "orderId": "00000000-0000-4000-8000-000000000001",
+              "itemId": "00000000-0000-4000-8000-000000000011",
+              "taskKind": "還空櫃",
+              "pickupName": "示意倉庫A",
+              "pickupAddress": "合成地點-倉庫A",
+              "deliveryName": "示意櫃場A",
+              "deliveryAddress": "合成地點-櫃場A",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-02T09:00:00+08:00",
+              "plannedEndAt": "2026-12-02T10:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-2",
+              "itemRef": "item-1",
+              "predecessorRefs": [
+                "task-1"
+              ],
+              "predecessorTaskIds": [
+                "00000000-0000-4000-8000-000000000021"
+              ]
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000023",
+              "taskNo": "DEMO-T-23",
+              "orderId": "00000000-0000-4000-8000-000000000001",
+              "itemId": "00000000-0000-4000-8000-000000000012",
+              "taskKind": "提重櫃",
+              "pickupName": "示意港區A",
+              "pickupAddress": "合成地點-港區A",
+              "deliveryName": "示意倉庫A",
+              "deliveryAddress": "合成地點-倉庫A",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T09:00:00+08:00",
+              "plannedEndAt": "2026-12-01T11:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-3",
+              "itemRef": "item-2",
+              "predecessorRefs": [],
+              "predecessorTaskIds": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000024",
+              "taskNo": "DEMO-T-24",
+              "orderId": "00000000-0000-4000-8000-000000000001",
+              "itemId": "00000000-0000-4000-8000-000000000012",
+              "taskKind": "還空櫃",
+              "pickupName": "示意倉庫A",
+              "pickupAddress": "合成地點-倉庫A",
+              "deliveryName": "示意櫃場A",
+              "deliveryAddress": "合成地點-櫃場A",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-02T09:00:00+08:00",
+              "plannedEndAt": "2026-12-02T10:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-4",
+              "itemRef": "item-2",
+              "predecessorRefs": [
+                "task-3"
+              ],
+              "predecessorTaskIds": [
+                "00000000-0000-4000-8000-000000000023"
+              ]
+            }
+          ],
+          "lifecycleStatus": "OPEN",
+          "acceptanceStatus": "DRAFT",
+          "version": 0,
+          "createdAt": "2026-11-17T16:00:00+08:00",
+          "updatedAt": "2026-11-17T16:00:00+08:00",
+          "createdBy": "00000000-0000-4000-8000-000000000901",
+          "updatedBy": "00000000-0000-4000-8000-000000000901"
+        },
+        "traceId": "demo-trace-DEMO-IMPORT-CONTRACT"
+      }
+    },
+    {
+      "id": "DEMO-EXPORT-CONTRACT-create",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "EXPORT",
+        "customerId": "00000000-0000-4000-8000-000000000102",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": {
+          "shippingCompany": "示意船公司",
+          "vesselVoyage": "DEMO-VOYAGE-E",
+          "pol": "示意裝貨港",
+          "pod": "示意卸貨港",
+          "eta": null,
+          "etd": "2026-12-05T08:00:00+08:00",
+          "blNo": null
+        },
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CONTAINER",
+            "containerType": "40HQ",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "18000.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": "2026-12-05T06:00:00+08:00",
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "提空櫃",
+            "pickupName": "示意櫃場A",
+            "pickupAddress": "合成地點-櫃場A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-03T09:00:00+08:00",
+            "plannedEndAt": "2026-12-03T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "交重櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意港區A",
+            "deliveryAddress": "合成地點-港區A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-04T09:00:00+08:00",
+            "plannedEndAt": "2026-12-04T11:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEMO-EXPORT-CONTRACT-response",
+      "schema": "OrderEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "草稿已保存（合成示例）",
+        "data": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "orderNo": "DEMO-E-001",
+          "type": "EXPORT",
+          "customerId": "00000000-0000-4000-8000-000000000102",
+          "customerName": "示意客戶乙",
+          "customerReference": null,
+          "remark": "合成案例，不代表真實委託",
+          "shipping": {
+            "shippingCompany": "示意船公司",
+            "vesselVoyage": "DEMO-VOYAGE-E",
+            "pol": "示意裝貨港",
+            "pod": "示意卸貨港",
+            "eta": null,
+            "etd": "2026-12-05T08:00:00+08:00",
+            "blNo": null
+          },
+          "items": [
+            {
+              "id": "00000000-0000-4000-8000-000000000031",
+              "sequence": 1,
+              "itemKind": "CONTAINER",
+              "containerType": "40HQ",
+              "containerNo": null,
+              "packageQty": null,
+              "grossWeight": "18000.00",
+              "cbm": null,
+              "lastPickupDate": null,
+              "deliveryCutoffAt": "2026-12-05T06:00:00+08:00",
+              "clientRef": "item-1"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "00000000-0000-4000-8000-000000000041",
+              "taskNo": "DEMO-T-41",
+              "orderId": "00000000-0000-4000-8000-000000000002",
+              "itemId": "00000000-0000-4000-8000-000000000031",
+              "taskKind": "提空櫃",
+              "pickupName": "示意櫃場A",
+              "pickupAddress": "合成地點-櫃場A",
+              "deliveryName": "示意倉庫A",
+              "deliveryAddress": "合成地點-倉庫A",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-03T09:00:00+08:00",
+              "plannedEndAt": "2026-12-03T10:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-1",
+              "itemRef": "item-1",
+              "predecessorRefs": [],
+              "predecessorTaskIds": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000042",
+              "taskNo": "DEMO-T-42",
+              "orderId": "00000000-0000-4000-8000-000000000002",
+              "itemId": "00000000-0000-4000-8000-000000000031",
+              "taskKind": "交重櫃",
+              "pickupName": "示意倉庫A",
+              "pickupAddress": "合成地點-倉庫A",
+              "deliveryName": "示意港區A",
+              "deliveryAddress": "合成地點-港區A",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-04T09:00:00+08:00",
+              "plannedEndAt": "2026-12-04T11:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-2",
+              "itemRef": "item-1",
+              "predecessorRefs": [
+                "task-1"
+              ],
+              "predecessorTaskIds": [
+                "00000000-0000-4000-8000-000000000041"
+              ]
+            }
+          ],
+          "lifecycleStatus": "OPEN",
+          "acceptanceStatus": "DRAFT",
+          "version": 0,
+          "createdAt": "2026-11-17T16:00:00+08:00",
+          "updatedAt": "2026-11-17T16:00:00+08:00",
+          "createdBy": "00000000-0000-4000-8000-000000000901",
+          "updatedBy": "00000000-0000-4000-8000-000000000901"
+        },
+        "traceId": "demo-trace-DEMO-EXPORT-CONTRACT"
+      }
+    },
+    {
+      "id": "DEMO-LOCAL-CONTRACT-create",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEMO-LOCAL-CONTRACT-response",
+      "schema": "OrderEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "草稿已保存（合成示例）",
+        "data": {
+          "id": "00000000-0000-4000-8000-000000000003",
+          "orderNo": "DEMO-L-001",
+          "type": "LOCAL",
+          "customerId": "00000000-0000-4000-8000-000000000103",
+          "customerName": "示意客戶丙",
+          "customerReference": null,
+          "remark": "合成案例，不代表真實委託",
+          "shipping": null,
+          "items": [
+            {
+              "id": "00000000-0000-4000-8000-000000000051",
+              "sequence": 1,
+              "itemKind": "CARGO",
+              "containerType": null,
+              "containerNo": null,
+              "packageQty": 10,
+              "grossWeight": "1200.00",
+              "cbm": null,
+              "lastPickupDate": null,
+              "deliveryCutoffAt": null,
+              "clientRef": "item-1"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "00000000-0000-4000-8000-000000000061",
+              "taskNo": "DEMO-T-61",
+              "orderId": "00000000-0000-4000-8000-000000000003",
+              "itemId": "00000000-0000-4000-8000-000000000051",
+              "taskKind": "國內轉運",
+              "pickupName": "示意倉庫A",
+              "pickupAddress": "合成地點-倉庫A",
+              "deliveryName": "示意中轉倉",
+              "deliveryAddress": "合成地點-中轉倉",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T09:00:00+08:00",
+              "plannedEndAt": "2026-12-01T10:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-1",
+              "itemRef": "item-1",
+              "predecessorRefs": [],
+              "predecessorTaskIds": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000062",
+              "taskNo": "DEMO-T-62",
+              "orderId": "00000000-0000-4000-8000-000000000003",
+              "itemId": "00000000-0000-4000-8000-000000000051",
+              "taskKind": "國內轉運",
+              "pickupName": "示意中轉倉",
+              "pickupAddress": "合成地點-中轉倉",
+              "deliveryName": "示意收貨點",
+              "deliveryAddress": "合成地點-收貨點",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T11:00:00+08:00",
+              "plannedEndAt": "2026-12-01T12:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-2",
+              "itemRef": "item-1",
+              "predecessorRefs": [
+                "task-1"
+              ],
+              "predecessorTaskIds": [
+                "00000000-0000-4000-8000-000000000061"
+              ]
+            }
+          ],
+          "lifecycleStatus": "OPEN",
+          "acceptanceStatus": "DRAFT",
+          "version": 0,
+          "createdAt": "2026-11-17T16:00:00+08:00",
+          "updatedAt": "2026-11-17T16:00:00+08:00",
+          "createdBy": "00000000-0000-4000-8000-000000000901",
+          "updatedBy": "00000000-0000-4000-8000-000000000901"
+        },
+        "traceId": "demo-trace-DEMO-LOCAL-CONTRACT"
+      }
+    },
+    {
+      "id": "replace-draft",
+      "schema": "ReplaceDraftRequest",
+      "value": {
+        "expectedVersion": 0,
+        "draft": {
+          "type": "LOCAL",
+          "customerId": "00000000-0000-4000-8000-000000000103",
+          "customerReference": null,
+          "remark": "合成案例，不代表真實委託",
+          "shipping": null,
+          "items": [
+            {
+              "sequence": 1,
+              "itemKind": "CARGO",
+              "containerType": null,
+              "containerNo": null,
+              "packageQty": 10,
+              "grossWeight": "1200.00",
+              "cbm": null,
+              "lastPickupDate": null,
+              "deliveryCutoffAt": null,
+              "clientRef": "item-1"
+            }
+          ],
+          "tasks": [
+            {
+              "taskKind": "國內轉運",
+              "pickupName": "示意倉庫A",
+              "pickupAddress": "合成地點-倉庫A",
+              "deliveryName": "示意中轉倉",
+              "deliveryAddress": "合成地點-中轉倉",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T09:00:00+08:00",
+              "plannedEndAt": "2026-12-01T10:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-1",
+              "itemRef": "item-1",
+              "predecessorRefs": []
+            },
+            {
+              "taskKind": "國內轉運",
+              "pickupName": "示意中轉倉",
+              "pickupAddress": "合成地點-中轉倉",
+              "deliveryName": "示意收貨點",
+              "deliveryAddress": "合成地點-收貨點",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T11:00:00+08:00",
+              "plannedEndAt": "2026-12-01T12:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-2",
+              "itemRef": "item-1",
+              "predecessorRefs": [
+                "task-1"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "page-response",
+      "schema": "OrderPageEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "合成列表",
+        "traceId": "demo-page",
+        "data": {
+          "content": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "orderNo": "DEMO-I-001",
+              "type": "IMPORT",
+              "customerId": "00000000-0000-4000-8000-000000000101",
+              "customerName": "示意客戶甲",
+              "lifecycleStatus": "OPEN",
+              "acceptanceStatus": "DRAFT",
+              "version": 0,
+              "createdAt": "2026-11-17T16:00:00+08:00",
+              "updatedAt": "2026-11-17T16:00:00+08:00"
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000002",
+              "orderNo": "DEMO-E-001",
+              "type": "EXPORT",
+              "customerId": "00000000-0000-4000-8000-000000000102",
+              "customerName": "示意客戶乙",
+              "lifecycleStatus": "OPEN",
+              "acceptanceStatus": "DRAFT",
+              "version": 0,
+              "createdAt": "2026-11-17T16:00:00+08:00",
+              "updatedAt": "2026-11-17T16:00:00+08:00"
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000003",
+              "orderNo": "DEMO-L-001",
+              "type": "LOCAL",
+              "customerId": "00000000-0000-4000-8000-000000000103",
+              "customerName": "示意客戶丙",
+              "lifecycleStatus": "OPEN",
+              "acceptanceStatus": "DRAFT",
+              "version": 0,
+              "createdAt": "2026-11-17T16:00:00+08:00",
+              "updatedAt": "2026-11-17T16:00:00+08:00"
+            }
+          ],
+          "page": 0,
+          "size": 20,
+          "totalElements": 3,
+          "totalPages": 1
+        }
+      }
+    },
+    {
+      "id": "empty-page-response",
+      "schema": "OrderPageEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "合成空列表",
+        "traceId": "demo-empty",
+        "data": {
+          "content": [],
+          "page": 0,
+          "size": 20,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    },
+    {
+      "id": "confirmed-fields-complete",
+      "schema": "AcceptanceCheckEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "已採用欄位規則齊全，仍未授予受理",
+        "traceId": "demo-check-complete",
+        "data": {
+          "orderId": "00000000-0000-4000-8000-000000000003",
+          "version": 0,
+          "checkedRules": [
+            "ORD-P01",
+            "ORD-P02",
+            "ORD-P03"
+          ],
+          "confirmedRulesOutcome": "COMPLETE",
+          "missingFields": [],
+          "pendingPolicyIds": [
+            "D04_CONTACT",
+            "D04_DICTIONARY",
+            "D05_REQUIRED_TASK_WAIVER"
+          ],
+          "operationalAcceptance": "NOT_GRANTED"
+        }
+      }
+    },
+    {
+      "id": "confirmed-fields-incomplete",
+      "schema": "AcceptanceCheckEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "缺欄位（合成示例）",
+        "traceId": "demo-check-incomplete",
+        "data": {
+          "orderId": "00000000-0000-4000-8000-000000000004",
+          "version": 0,
+          "checkedRules": [
+            "ORD-P01",
+            "ORD-P02",
+            "ORD-P03"
+          ],
+          "confirmedRulesOutcome": "INCOMPLETE",
+          "missingFields": [
+            {
+              "path": "/items",
+              "fieldId": "ORD-P02",
+              "ruleId": "ORD-P02",
+              "message": "至少一項目；本例為最小草稿"
+            }
+          ],
+          "pendingPolicyIds": [
+            "D04_DICTIONARY"
+          ],
+          "operationalAcceptance": "NOT_GRANTED"
+        }
+      }
+    },
+    {
+      "id": "version-conflict-response",
+      "schema": "ErrorEnvelope",
+      "value": {
+        "code": "VERSION_CONFLICT",
+        "message": "草稿已有較新版本",
+        "data": {
+          "actualVersion": 1
+        },
+        "traceId": "demo-409",
+        "fieldErrors": []
+      }
+    },
+    {
+      "id": "session-required-response",
+      "schema": "ErrorEnvelope",
+      "value": {
+        "code": "UNAUTHENTICATED",
+        "message": "請重新登入",
+        "data": null,
+        "traceId": "demo-401",
+        "fieldErrors": []
+      }
+    },
+    {
+      "id": "known-zero-vs-null",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "0",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "microsecond-precision-instant",
+      "schema": "NullableDateTime",
+      "value": "2026-12-01T01:00:00.123456Z"
+    }
+  ],
+  "schemaNegative": [
+    {
+      "id": "missing-customer",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "client-cannot-set-order-id",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ],
+        "id": "00000000-0000-4000-8000-000000000999"
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "client-cannot-set-status",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ],
+        "lifecycleStatus": "CLOSED"
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "client-cannot-set-item-id",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1",
+            "id": "00000000-0000-4000-8000-000000000999"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "client-cannot-set-item-foreign-uuid",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": [],
+            "itemId": "00000000-0000-4000-8000-000000000999"
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "negative-package-quantity",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": -1,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "over-integer-capacity",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 2147483648,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "numeric-not-decimal-string",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": 1200.5,
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "negative-weight",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "-1",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "blank-task-kind",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "   ",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "datetime-without-offset",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "invalid-calendar-date",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": "2026-02-30",
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "cannot-waive-required-task",
+      "schema": "CreateDraftRequest",
+      "value": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": false,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "cannot-replace-without-version",
+      "schema": "ReplaceDraftRequest",
+      "value": {
+        "draft": {
+          "type": "LOCAL",
+          "customerId": "00000000-0000-4000-8000-000000000103",
+          "customerReference": null,
+          "remark": "合成案例，不代表真實委託",
+          "shipping": null,
+          "items": [
+            {
+              "sequence": 1,
+              "itemKind": "CARGO",
+              "containerType": null,
+              "containerNo": null,
+              "packageQty": 10,
+              "grossWeight": "1200.00",
+              "cbm": null,
+              "lastPickupDate": null,
+              "deliveryCutoffAt": null,
+              "clientRef": "item-1"
+            }
+          ],
+          "tasks": [
+            {
+              "taskKind": "國內轉運",
+              "pickupName": "示意倉庫A",
+              "pickupAddress": "合成地點-倉庫A",
+              "deliveryName": "示意中轉倉",
+              "deliveryAddress": "合成地點-中轉倉",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T09:00:00+08:00",
+              "plannedEndAt": "2026-12-01T10:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-1",
+              "itemRef": "item-1",
+              "predecessorRefs": []
+            },
+            {
+              "taskKind": "國內轉運",
+              "pickupName": "示意中轉倉",
+              "pickupAddress": "合成地點-中轉倉",
+              "deliveryName": "示意收貨點",
+              "deliveryAddress": "合成地點-收貨點",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T11:00:00+08:00",
+              "plannedEndAt": "2026-12-01T12:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-2",
+              "itemRef": "item-1",
+              "predecessorRefs": [
+                "task-1"
+              ]
+            }
+          ]
+        }
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "unsafe-large-version",
+      "schema": "ReplaceDraftRequest",
+      "value": {
+        "expectedVersion": 9007199254740992,
+        "draft": {
+          "type": "LOCAL",
+          "customerId": "00000000-0000-4000-8000-000000000103",
+          "customerReference": null,
+          "remark": "合成案例，不代表真實委託",
+          "shipping": null,
+          "items": [
+            {
+              "sequence": 1,
+              "itemKind": "CARGO",
+              "containerType": null,
+              "containerNo": null,
+              "packageQty": 10,
+              "grossWeight": "1200.00",
+              "cbm": null,
+              "lastPickupDate": null,
+              "deliveryCutoffAt": null,
+              "clientRef": "item-1"
+            }
+          ],
+          "tasks": [
+            {
+              "taskKind": "國內轉運",
+              "pickupName": "示意倉庫A",
+              "pickupAddress": "合成地點-倉庫A",
+              "deliveryName": "示意中轉倉",
+              "deliveryAddress": "合成地點-中轉倉",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T09:00:00+08:00",
+              "plannedEndAt": "2026-12-01T10:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-1",
+              "itemRef": "item-1",
+              "predecessorRefs": []
+            },
+            {
+              "taskKind": "國內轉運",
+              "pickupName": "示意中轉倉",
+              "pickupAddress": "合成地點-中轉倉",
+              "deliveryName": "示意收貨點",
+              "deliveryAddress": "合成地點-收貨點",
+              "siteContact": null,
+              "plannedStartAt": "2026-12-01T11:00:00+08:00",
+              "plannedEndAt": "2026-12-01T12:00:00+08:00",
+              "requiredTask": true,
+              "clientRef": "task-2",
+              "itemRef": "item-1",
+              "predecessorRefs": [
+                "task-1"
+              ]
+            }
+          ]
+        }
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "complete-cannot-have-missing-fields",
+      "schema": "AcceptanceCheckEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "已採用欄位規則齊全，仍未授予受理",
+        "traceId": "demo-check-complete",
+        "data": {
+          "orderId": "00000000-0000-4000-8000-000000000003",
+          "version": 0,
+          "checkedRules": [
+            "ORD-P01",
+            "ORD-P02",
+            "ORD-P03"
+          ],
+          "confirmedRulesOutcome": "COMPLETE",
+          "missingFields": [
+            {
+              "path": "/items",
+              "fieldId": "ORD-P02",
+              "ruleId": "ORD-P02",
+              "message": "缺項目"
+            }
+          ],
+          "pendingPolicyIds": [
+            "D04_CONTACT",
+            "D04_DICTIONARY",
+            "D05_REQUIRED_TASK_WAIVER"
+          ],
+          "operationalAcceptance": "NOT_GRANTED"
+        }
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "cannot-grant-acceptance",
+      "schema": "AcceptanceCheckEnvelope",
+      "value": {
+        "code": "OK",
+        "message": "已採用欄位規則齊全，仍未授予受理",
+        "traceId": "demo-check-complete",
+        "data": {
+          "orderId": "00000000-0000-4000-8000-000000000003",
+          "version": 0,
+          "checkedRules": [
+            "ORD-P01",
+            "ORD-P02",
+            "ORD-P03"
+          ],
+          "confirmedRulesOutcome": "COMPLETE",
+          "missingFields": [],
+          "pendingPolicyIds": [
+            "D04_CONTACT",
+            "D04_DICTIONARY",
+            "D05_REQUIRED_TASK_WAIVER"
+          ],
+          "operationalAcceptance": "GRANTED"
+        }
+      },
+      "expected": "schema_reject"
+    },
+    {
+      "id": "offset-minute-60",
+      "schema": "NullableDateTime",
+      "value": "2026-12-01T10:00:00+00:60",
+      "expected": "schema_reject"
+    },
+    {
+      "id": "offset-minute-99",
+      "schema": "NullableDateTime",
+      "value": "2026-12-01T10:00:00+01:99",
+      "expected": "schema_reject"
+    },
+    {
+      "id": "offset-hour-24",
+      "schema": "NullableDateTime",
+      "value": "2026-12-01T10:00:00+24:00",
+      "expected": "schema_reject"
+    },
+    {
+      "id": "fraction-7-digits",
+      "schema": "NullableDateTime",
+      "value": "2026-12-01T10:00:00.1234567+08:00",
+      "expected": "schema_reject"
+    },
+    {
+      "id": "fraction-9-digits",
+      "schema": "NullableDateTime",
+      "value": "2026-12-01T10:00:00.123456789+08:00",
+      "expected": "schema_reject"
+    },
+    {
+      "id": "fraction-18-digits",
+      "schema": "NullableDateTime",
+      "value": "2026-12-01T10:00:00.123456789123456789+08:00",
+      "expected": "schema_reject"
+    },
+    {
+      "id": "ref-with-trailing-newline",
+      "schema": "RefKey",
+      "value": "item-1\n",
+      "expected": "schema_reject"
+    },
+    {
+      "id": "decimal-with-trailing-newline",
+      "schema": "NullableDecimal",
+      "value": "1200.00\n",
+      "expected": "schema_reject"
+    }
+  ],
+  "graphCases": [
+    {
+      "id": "DEMO-IMPORT-CONTRACT",
+      "expected": "valid_graph",
+      "draft": {
+        "type": "IMPORT",
+        "customerId": "00000000-0000-4000-8000-000000000101",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": {
+          "shippingCompany": "示意船公司",
+          "vesselVoyage": "DEMO-VOYAGE-I",
+          "pol": "示意裝貨港",
+          "pod": "示意卸貨港",
+          "eta": "2026-12-01T08:00:00+08:00",
+          "etd": null,
+          "blNo": "DEMO-BL-I"
+        },
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CONTAINER",
+            "containerType": "20GP",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "12000.00",
+            "cbm": null,
+            "lastPickupDate": "2026-12-04",
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          },
+          {
+            "sequence": 2,
+            "itemKind": "CONTAINER",
+            "containerType": "40HQ",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "18000.00",
+            "cbm": null,
+            "lastPickupDate": "2026-12-04",
+            "deliveryCutoffAt": null,
+            "clientRef": "item-2"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "提重櫃",
+            "pickupName": "示意港區A",
+            "pickupAddress": "合成地點-港區A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T11:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "還空櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意櫃場A",
+            "deliveryAddress": "合成地點-櫃場A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-02T09:00:00+08:00",
+            "plannedEndAt": "2026-12-02T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          },
+          {
+            "taskKind": "提重櫃",
+            "pickupName": "示意港區A",
+            "pickupAddress": "合成地點-港區A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T11:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-3",
+            "itemRef": "item-2",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "還空櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意櫃場A",
+            "deliveryAddress": "合成地點-櫃場A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-02T09:00:00+08:00",
+            "plannedEndAt": "2026-12-02T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-4",
+            "itemRef": "item-2",
+            "predecessorRefs": [
+              "task-3"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEMO-EXPORT-CONTRACT",
+      "expected": "valid_graph",
+      "draft": {
+        "type": "EXPORT",
+        "customerId": "00000000-0000-4000-8000-000000000102",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": {
+          "shippingCompany": "示意船公司",
+          "vesselVoyage": "DEMO-VOYAGE-E",
+          "pol": "示意裝貨港",
+          "pod": "示意卸貨港",
+          "eta": null,
+          "etd": "2026-12-05T08:00:00+08:00",
+          "blNo": null
+        },
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CONTAINER",
+            "containerType": "40HQ",
+            "containerNo": null,
+            "packageQty": null,
+            "grossWeight": "18000.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": "2026-12-05T06:00:00+08:00",
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "提空櫃",
+            "pickupName": "示意櫃場A",
+            "pickupAddress": "合成地點-櫃場A",
+            "deliveryName": "示意倉庫A",
+            "deliveryAddress": "合成地點-倉庫A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-03T09:00:00+08:00",
+            "plannedEndAt": "2026-12-03T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "交重櫃",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意港區A",
+            "deliveryAddress": "合成地點-港區A",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-04T09:00:00+08:00",
+            "plannedEndAt": "2026-12-04T11:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEMO-LOCAL-CONTRACT",
+      "expected": "valid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "duplicate-item-ref",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          },
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "duplicate-task-ref",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-item-ref",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "another-order-item",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-predecessor",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "unknown-task"
+            ]
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "self-predecessor",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "cyclic-predecessors",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-2"
+            ]
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "duplicate-item-sequence",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          },
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-other"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T10:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "end-before-start",
+      "expected": "invalid_graph",
+      "draft": {
+        "type": "LOCAL",
+        "customerId": "00000000-0000-4000-8000-000000000103",
+        "customerReference": null,
+        "remark": "合成案例，不代表真實委託",
+        "shipping": null,
+        "items": [
+          {
+            "sequence": 1,
+            "itemKind": "CARGO",
+            "containerType": null,
+            "containerNo": null,
+            "packageQty": 10,
+            "grossWeight": "1200.00",
+            "cbm": null,
+            "lastPickupDate": null,
+            "deliveryCutoffAt": null,
+            "clientRef": "item-1"
+          }
+        ],
+        "tasks": [
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意倉庫A",
+            "pickupAddress": "合成地點-倉庫A",
+            "deliveryName": "示意中轉倉",
+            "deliveryAddress": "合成地點-中轉倉",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T09:00:00+08:00",
+            "plannedEndAt": "2026-12-01T08:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-1",
+            "itemRef": "item-1",
+            "predecessorRefs": []
+          },
+          {
+            "taskKind": "國內轉運",
+            "pickupName": "示意中轉倉",
+            "pickupAddress": "合成地點-中轉倉",
+            "deliveryName": "示意收貨點",
+            "deliveryAddress": "合成地點-收貨點",
+            "siteContact": null,
+            "plannedStartAt": "2026-12-01T11:00:00+08:00",
+            "plannedEndAt": "2026-12-01T12:00:00+08:00",
+            "requiredTask": true,
+            "clientRef": "task-2",
+            "itemRef": "item-1",
+            "predecessorRefs": [
+              "task-1"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "serviceScenariosNotRun": [
+    {
+      "id": "ORD-A03",
+      "given": "停用／不存在客戶",
+      "expected": "400 INVALID_CUSTOMER，不新增任何資料",
+      "status": "not_run"
+    },
+    {
+      "id": "ORD-A09",
+      "given": "Core／TOM／子項寫入中途失敗",
+      "expected": "全部回滾，無成功重送紀錄／半筆資料",
+      "status": "not_run"
+    },
+    {
+      "id": "ORD-A10-stale",
+      "given": "新key、舊expectedVersion",
+      "expected": "409 VERSION_CONFLICT，版本／資料不變",
+      "status": "not_run"
+    },
+    {
+      "id": "ORD-A10-replay",
+      "given": "同key／同body重試，原expectedVersion已舊",
+      "expected": "先授權再重播原結果，新traceId，無額外版本／歷程",
+      "status": "not_run"
+    },
+    {
+      "id": "ORD-A10-conflict",
+      "given": "同key／不同body或同key執行中",
+      "expected": "409 IDEMPOTENCY_KEY_REUSED／IDEMPOTENCY_IN_PROGRESS",
+      "status": "not_run"
+    },
+    {
+      "id": "ORD-A12",
+      "given": "未登入／缺CSRF／無權／跨單",
+      "expected": "依契約401／403／404，不能重播越權結果",
+      "status": "not_run"
+    },
+    {
+      "id": "ORD-A15",
+      "given": "保存或讀取欄位完整性",
+      "expected": "仍OPEN＋DRAFT，不受理、無派工、人車占用或釋放",
+      "status": "not_run"
+    },
+    {
+      "id": "ORD-A08",
+      "given": "主檔改名後同客戶草稿編輯，或換新有效客戶",
+      "expected": "同客戶快照保持；明確換客戶才取新快照",
+      "status": "not_run"
+    }
+  ]
+}

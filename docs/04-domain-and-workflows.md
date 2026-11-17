@@ -1,6 +1,6 @@
 # 資料模型與流程草案
 
-狀態更新（2026-11-17）：已確認模型、派工及釋放基準見 [決策紀錄](06-decisions-and-acceptance.md)。本頁是概念與候選欄位，尚非正式 DB／OpenAPI；其餘代碼、技術、欄位與例外不因本次同步而核准。
+狀態更新（2026-11-17）：已確認模型、派工及釋放基準見 [決策紀錄](06-decisions-and-acceptance.md)。本頁保留概念與候選欄位；ORD-P01～P03已採用，首片以 [資料模型](FIRST_SLICE_DATA_MODEL.md) 與 [API契約](api/README.md) 為準，其餘例外不因此核准，尚無DDL／產品程式。
 
 ## 領域邊界與關聯
 
@@ -29,7 +29,7 @@ OrderCore 與 TomOrder 共用 orderUuid。依已確認多段基準，TransportTa
 | 簽收 | 所屬派工、資產 ID、上傳者、時間、備註；檔案規格及保存期限待定 |
 | 歷程 | UUID、對象與 ID、動作、前後狀態、操作者、時間、原因、requestId |
 
-共用：createdAt／updatedAt、建立與異動者、version。新 ID 採 UUID 字串；單號與 UUID 分開，單號唯一並由後端產生。金額／重量用 decimal，明確單位，不能用字串或浮點數混算。電話唯一與共用公司電話的例外待確認。
+共用：createdAt／updatedAt、建立與異動者、version。新 ID 採 UUID 字串；單號與 UUID 分開，單號唯一並由後端產生。金額／重量計算與保存用decimal，明確單位；首片重量／體積以十進位字串跨JSON傳輸，映射BigDecimal／numeric，不用字串算術或浮點混算。電話唯一與共用公司電話的例外待確認。
 
 ## 本機獨有進出口欄位摘要
 
@@ -52,12 +52,12 @@ OrderCore 與 TomOrder 共用 orderUuid。依已確認多段基準，TransportTa
 | 層級 | 建議代碼 | 說明 |
 |---|---|---|
 | OrderCore | OPEN／CANCELLED／CLOSED | 取消與結案為終態 |
-| TOM 安排 | NEW → ACCEPTED → ASSIGNED | 只代表安排，不代表已出發或交貨 |
+| TOM 受理／安排 | 首片DRAFT；後續ACCEPTED及任務衍生安排 | 舊NEW名稱由本片DRAFT取代；受理與整體安排分開，草稿端點不轉態 |
 | FMS 執行 | ASSIGNED → IN_PROGRESS → SIGNED → COMPLETED | CREATED 是否保留待確認；直接派工可從 ASSIGNED 起始 |
 | 車輛 | AVAILABLE／IN_USE／MAINTENANCE／RETIRED | 統一原文件 BUSY／IN_USE 落差 |
 | 司機 | ACTIVE／SUSPENDED／INACTIVE，加 onDuty | 上線不等於未被占用 |
 
-建議：建立訂單同交易建立 Core 與 TOM；受理須 OPEN＋NEW；派工須 OPEN＋ACCEPTED（多任務模式另算整體安排狀態）；車可用、司機 ACTIVE＋onDuty 且無有效占用。出發只允許 ASSIGNED，簽收只允許 IN_PROGRESS，後台完成只允許 SIGNED。若簽收照片列必填，未有通過驗證的資產不可簽收。
+建議：建立訂單同交易建立 Core 與 TOM；受理候選前態為OPEN＋DRAFT；派工須 OPEN＋ACCEPTED（多任務模式另算整體安排狀態）；車可用、司機 ACTIVE＋onDuty 且無有效占用。出發只允許 ASSIGNED，簽收只允許 IN_PROGRESS，後台完成只允許 SIGNED。若簽收照片列必填，未有通過驗證的資產不可簽收。
 
 取消：原 TOM 規則禁止 ASSIGNED 後取消，FMS 卻直接允許 cancel，存在衝突。新版已確認出發前可撤派／改派並留史、出發後走異常流程；具體原因欄位、異常處置及授權仍待 D05。取消訂單與取消單一派工不同，不得相互隱含。
 
